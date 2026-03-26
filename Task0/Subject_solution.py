@@ -7,18 +7,20 @@ class Subject_solution:
     def __init__(self, permutation, makespan):
         self.permutation = permutation
         self.makespan = makespan
-
+    def copy(self):
+        return Subject_solution(self.permutation.copy(), self.makespan)
+    
     @classmethod
     def set_lookup(cls, subject):
         cls.job_lookup = {job.id: job for job in subject}
-
+    
     @classmethod
     def from_ids(cls, child_ids, machines):
         """Alternative constructor — build from a list of ids"""
         perm = [cls.job_lookup[id] for id in child_ids]
         ms = solution(perm, machines)[-1]
         return cls(perm, ms)
-
+    
     @property
     def ids(self):
         return [job.id for job in self.permutation]
