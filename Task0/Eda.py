@@ -45,7 +45,7 @@ def greedy(subject, machines):
 
 
 def genetic(subject, machines, population_size=50, generations=100,
-            root_parents=20, tournament_size=5, pm=0.1):
+            root_parents=20, tournament_size=10, pm=0.1):
     Population = []  # list of Subject_solution objects
     population_makespan = []
     temp_subject = subject.copy()
@@ -88,32 +88,35 @@ def genetic(subject, machines, population_size=50, generations=100,
             best = s
     return Population, best
 
+def simulatedAnnealing(subject, machines, temp=1000, cooling_rate=0.999, 
+                       iterations=50000):
+    rand.shuffle(subject)
+    current_sol = solution(subject, machines)[-1]
+    current_subject = Subject_solution(subject, current_sol)
+    temp_subject = current_subject.copy()
+    for _ in range(iterations):
+        swap(temp_subject, machines)
+        if temp_subject.makespan < current_sol:
+            current_sol = temp_subject.makespan
+            current_subject = temp_subject.copy()
+        elif rand.random() < 2.71828 ** ((current_sol - temp_subject.makespan) / temp):
+                current_sol = temp_subject.makespan
+                current_subject = temp_subject.copy()
+        temp *= cooling_rate
+    return current_subject
 
+simulatedAnnealing_solution = simulatedAnnealing(subject, machines)
+print(f"Simulated Annealing — Makespan: {simulatedAnnealing_solution.makespan}")
+# print(f"Simulated Annealing — Best order: {simulatedAnnealing_solution.ids}")
 Best_subject, Highest_solution = randomSearch(subject, machines)
-print(f"Random Search — Best order: {[job.id for job in Best_subject]}")
 print(f"Random Search — Makespan: {Highest_solution}")
+# print(f"Random Search — Best order: {[job.id for job in Best_subject]}")
 
 Best_subject, Highest_solution = greedy(subject, machines)
-print(f"Greedy — Best order: {[job.id for job in Best_subject]}")
 print(f"Greedy — Makespan: {Highest_solution}")
+# print(f"Greedy — Best order: {[job.id for job in Best_subject]}")
 
 Population, Highest_solution = genetic(subject, machines, generations=10)
 print(f"Genetic Algorithm — Makespan: {Highest_solution.makespan}")
-print(f"Genetic Algorithm — Best order: {Highest_solution.ids}")
+# print(f"Genetic Algorithm — Best order: {Highest_solution.ids}")
 
-# 2. EVALUATE    — compute makespan for each Solution ✅
-# 3. SELECT      — pick parents (tournament, roulette wheel, etc.)✅
-# 4. CROSSOVER   — combine two parents → child permutation ✅
-# 5. MUTATE      — randomly tweak child with probability Pm ✅
-# 6. REPEAT 3-5 for gen generations
-# 7. TRACK       — best, average, worst makespan per generation
-# project/
-# ├── load.py
-# ├── Solution.py        ← done ✅
-# ├── Eda.py             ← your main file, rename to main.py eventually
-# │
-# │   Algorithms:
-# ├── randomSearch()     ← done ✅
-# ├── greedy()           ← done ✅
-# ├── ga()               ← next to implement
-# └── simulatedAnnealing() ← after GA
