@@ -78,8 +78,10 @@ def genetic(
                     best_parent = individual
             Parents.append(best_parent)
         # Crossover ox
-        for i in range(len(Parents)):
-            Children.append(ox(Parents[i].ids, Parents[i - 1].ids, machines))
+        for i in range(0, len(Parents), 2):
+            if i + 1 < len(Parents):
+                Children.append(ox(Parents[i].ids, Parents[i + 1].ids, machines))
+                Children.append(ox(Parents[i + 1].ids, Parents[i].ids, machines))
         # Mutation swap
         for child in Children:
             if rand.random() < pm:  # mutation probability
