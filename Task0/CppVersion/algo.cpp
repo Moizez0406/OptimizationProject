@@ -117,11 +117,18 @@ Subject_solution genetic(const Subject_solution& solution, int population_size,
             }
             parents.push_back(best);
         }
+        
+        for (int i = 0; i < (int)parents.size(); i += 2) {
+            if (i + 1 < (int)parents.size()) {
+                Subject_solution p1 = parents[i];
+                Subject_solution p2 = parents[i + 1];
 
-        for (int i = 0; i < (int)parents.size(); i++) {
-            int prev = (i == 0) ? (int)parents.size() - 1 : i - 1;
-            Subject_solution child = ox(parents[i], parents[prev]);
-            children.push_back(child);
+                Subject_solution child1 = ox(p1, p2);
+                Subject_solution child2 = ox(p2, p1);
+
+                children.push_back(child1);
+                children.push_back(child2);
+            }
         }
 
         std::uniform_real_distribution<double> prob(0.0, 1.0);
