@@ -5,11 +5,7 @@ from Subject_solution import Subject_solution, swap, ox, solution
 from collections import namedtuple
 
 Job = namedtuple("Job", ["id", "times"])
-<<<<<<< HEAD
-jobs, machines, subject, UB, LB = load.load_taillard("tai100_10_0.fsp")
-=======
-jobs, machines, subject, UB, LB = load.load_taillard("tai500_20_0.fsp")
->>>>>>> 83805ac (Small fixes across all the project)
+jobs, machines, subject, UB, LB = load.load_taillard("tai20_10_0.fsp")
 subject = [Job(id=i, times=t) for i, t in enumerate(subject)]
 Subject_solution.set_lookup(subject)
 
@@ -41,6 +37,8 @@ def greedy(subject, machines):
             if ms < current_sol:
                 current_sol = ms
                 current_job = s
+            if ms < current_sol:
+                current_sol = ms
         Best_subject.append(current_job)
         temp_subject.remove(current_job)
 
@@ -82,15 +80,8 @@ def genetic(
                     best_parent = individual
             Parents.append(best_parent)
         # Crossover ox
-        for i in range(0, len(Parents), 2):
-            if i + 1 < len(Parents):
-                Children.append(ox(Parents[i].ids, Parents[i + 1].ids, machines))
-                Children.append(ox(Parents[i + 1].ids, Parents[i].ids, machines))
-<<<<<<< HEAD
-=======
-        # for i in range(len(Parents)):
-        #     Children.append(ox(Parents[i].ids, Parents[i - 1].ids, machines))
->>>>>>> 83805ac (Small fixes across all the project)
+        for i in range(len(Parents)):
+            Children.append(ox(Parents[i].ids, Parents[i - 1].ids, machines))
         # Mutation swap
         for child in Children:
             if rand.random() < pm:  # mutation probability
