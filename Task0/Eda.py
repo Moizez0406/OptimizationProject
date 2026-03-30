@@ -5,11 +5,7 @@ from Subject_solution import Subject_solution, swap, ox, solution
 from collections import namedtuple
 
 Job = namedtuple("Job", ["id", "times"])
-<<<<<<< HEAD
-jobs, machines, subject, UB, LB = load.load_taillard("tai100_10_0.fsp")
-=======
 jobs, machines, subject, UB, LB = load.load_taillard("tai500_20_0.fsp")
->>>>>>> 83805ac (Small fixes across all the project)
 subject = [Job(id=i, times=t) for i, t in enumerate(subject)]
 Subject_solution.set_lookup(subject)
 
@@ -86,11 +82,8 @@ def genetic(
             if i + 1 < len(Parents):
                 Children.append(ox(Parents[i].ids, Parents[i + 1].ids, machines))
                 Children.append(ox(Parents[i + 1].ids, Parents[i].ids, machines))
-<<<<<<< HEAD
-=======
         # for i in range(len(Parents)):
         #     Children.append(ox(Parents[i].ids, Parents[i - 1].ids, machines))
->>>>>>> 83805ac (Small fixes across all the project)
         # Mutation swap
         for child in Children:
             if rand.random() < pm:  # mutation probability

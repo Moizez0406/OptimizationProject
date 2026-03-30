@@ -36,8 +36,8 @@ for algo, makespans in data.items():
                alpha=0.5)
 
 # UB and LB reference lines
-ax.axhline(y=26189, color="black", linestyle=":", linewidth=1.5, label="UB=62189")
-ax.axhline(y=25992, color="gray",  linestyle=":", linewidth=1.5, label="LB=25992")
+ax.axhline(y=6286, color="black", linestyle=":", linewidth=1.5, label="UB=6286")
+ax.axhline(y=5851, color="gray",  linestyle=":", linewidth=1.5, label="LB=5851")
 
 ax.set_xlabel("Run")
 ax.set_ylabel("Makespan")

@@ -3,10 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <random>
-<<<<<<< HEAD
-=======
 std::uniform_real_distribution<double> prob_dist(0.0, 1.0);
->>>>>>> 83805ac (Small fixes across all the project)
 
 Subject_solution randomSearch(const Subject_solution& solution,
                               int iterations) {
@@ -71,7 +68,46 @@ Subject_solution ox(const Subject_solution& parent1,
     }
     return Subject_solution::from_ids(child_ids);
 }
+Subject_solution pmx(const Subject_solution& parent1,
+                     const Subject_solution& parent2) {
+    std::vector<int> p1 = parent1.get_ids();
+    std::vector<int> p2 = parent2.get_ids();
+    int n = (int)p1.size();
 
+    std::uniform_int_distribution<int> dist(0, n - 1);
+    int i = dist(gen);
+    int j = dist(gen);
+    if (i > j) std::swap(i, j);
+
+    std::vector<int> child(n, -1);
+
+    // Step 1: Copy segment from parent1
+    for (int k = i; k <= j; k++) {
+        child[k] = p1[k];
+    }
+
+    // Step 2: Create mapping (p2 -> p1 in segment)
+    std::unordered_map<int, int> mapping;
+    for (int k = i; k <= j; k++) {
+        mapping[p2[k]] = p1[k];
+    }
+
+    // Step 3: Fill remaining positions
+    for (int k = 0; k < n; k++) {
+        if (k >= i && k <= j) continue;
+
+        int gene = p2[k];
+
+        // Resolve conflicts using mapping
+        while (mapping.find(gene) != mapping.end()) {
+            gene = mapping[gene];
+        }
+
+        child[k] = gene;
+    }
+
+    return Subject_solution::from_ids(child);
+}
 Subject_solution simulatedAnnealing(const Subject_solution& solution,
                                     double temp, double cooling_rate,
                                     int iterations) {
@@ -96,13 +132,8 @@ Subject_solution simulatedAnnealing(const Subject_solution& solution,
 }
 
 Subject_solution genetic(const Subject_solution& solution, int population_size,
-<<<<<<< HEAD
-                         int generations, int root_parents, int tournament_size,
-                         double pm) {
-=======
                          int generations, int tournament_size, double pm,
                          double px) {
->>>>>>> 83805ac (Small fixes across all the project)
     std::vector<Subject_solution> population;
     for (int i = 0; i < population_size; i++) {
         Subject_solution temp = solution.copy();
@@ -110,17 +141,14 @@ Subject_solution genetic(const Subject_solution& solution, int population_size,
         temp.compute_makespan();
         population.push_back(temp);
     }
+    Subject_solution global_best = population[0];
 
     for (int g = 0; g < generations; g++) {
         std::vector<Subject_solution> parents;
         std::vector<Subject_solution> children;
 
         std::uniform_int_distribution<int> dist(0, (int)population.size() - 1);
-<<<<<<< HEAD
-        for (int p = 0; p < root_parents; p++) {
-=======
         for (int p = 0; p < population_size; p++) {
->>>>>>> 83805ac (Small fixes across all the project)
             Subject_solution best = population[dist(gen)];
             for (int t = 1; t < tournament_size; t++) {
                 Subject_solution candidate = population[dist(gen)];
@@ -130,34 +158,22 @@ Subject_solution genetic(const Subject_solution& solution, int population_size,
             }
             parents.push_back(best);
         }
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> 83805ac (Small fixes across all the project)
         for (int i = 0; i < (int)parents.size(); i += 2) {
             if (i + 1 < (int)parents.size()) {
                 Subject_solution p1 = parents[i];
                 Subject_solution p2 = parents[i + 1];
-<<<<<<< HEAD
-
-                Subject_solution child1 = ox(p1, p2);
-                Subject_solution child2 = ox(p2, p1);
-
-                children.push_back(child1);
-                children.push_back(child2);
-=======
                 if (prob_dist(gen) < px) {
                     Subject_solution child1 = ox(p1, p2);
                     Subject_solution child2 = ox(p2, p1);
-
+                    child1.compute_makespan();
+                    child2.compute_makespan();
                     children.push_back(child1);
                     children.push_back(child2);
                 } else {
                     children.push_back(p1);
                     children.push_back(p2);
                 }
->>>>>>> 83805ac (Small fixes across all the project)
             }
         }
 
@@ -165,40 +181,33 @@ Subject_solution genetic(const Subject_solution& solution, int population_size,
         for (auto& child : children) {
             if (prob(gen) < pm) {
                 child.swap_jobs(gen);
+                child.compute_makespan();
             }
         }
-<<<<<<< HEAD
-        population = children;
-    }
-    return *std::min_element(population.begin(), population.end());
-}
-=======
-        int elite_count = population_size / 10;
-
-        // sort current population — best first
+        std::sort(children.begin(), children.end());
         std::sort(population.begin(), population.end());
 
-        // take elite from old population
-        std::vector<Subject_solution> new_pop(population.begin(),
-                                              population.begin() + elite_count);
+        // 2. Update Global Best (The "Memory" of the GA)
+        if (population[0] < global_best) {
+            global_best = population[0];
+        }
 
-        // sort children — best first
-        std::sort(children.begin(), children.end());
+        // 3. Elitism: Keep the 20% absolute best from the OLD population
+        std::vector<Subject_solution> new_pop;
+        int elite_count = population_size / 5;
+        for (int i = 0; i < elite_count; i++) {
+            new_pop.push_back(population[i]);
+        }
 
-        // fill remaining slots with best children
-        int remaining = population_size - elite_count;
-        new_pop.insert(
-            new_pop.end(), children.begin(),
-            children.begin() + std::min(remaining, (int)children.size()));
-
-        // if still short (children < remaining) fill with more elite
-        while ((int)new_pop.size() < population_size) {
-            new_pop.push_back(population[new_pop.size() % elite_count]);
+        // 4. Fill the rest with children
+        for (int i = 0;
+             i < population_size - elite_count && i < children.size(); i++) {
+            new_pop.push_back(children[i]);
         }
 
         population = new_pop;  // always exactly population_size
     }
-    return *std::min_element(population.begin(), population.end());
+    return global_best;
 }
 std::pair<Subject_solution, std::vector<GenerationStats>> genetic_tracked(
     const Subject_solution& solution, int population_size, int generations,
@@ -259,4 +268,3 @@ std::pair<Subject_solution, std::vector<GenerationStats>> genetic_tracked(
         *std::min_element(population.begin(), population.end());
     return {best, stats};
 }
->>>>>>> 83805ac (Small fixes across all the project)

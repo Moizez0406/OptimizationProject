@@ -38,17 +38,9 @@ class Subject_solution:
 def solution(jobs, machines):
     time = [0] * machines
     for jb in jobs:
-<<<<<<< HEAD
-        for i in range(machines):
-            if i == 0:
-                time[i] += jb.times[i]
-            else:
-                time[i] = max(time[i], time[i - 1]) + jb.times[i]
-=======
         time[0] += jb.times[0]
         for i in range(1, machines):
             time[i] = max(time[i], time[i - 1]) + jb.times[i]
->>>>>>> 83805ac (Small fixes across all the project)
     return time
 
 

@@ -10,10 +10,10 @@ int main() {
     Subject_solution::set_lookup(inst.jobs);
     Subject_solution sol(inst.jobs);
 
-    int population_size = 180;
+    int population_size = 400;
     int generations = 1000;
     int tournament_size = 5;
-    double pm = 0.1;
+    double pm = 0.01;
 
     auto [ga_best, ga_stats] =
         genetic_tracked(sol, population_size, generations, tournament_size, pm);

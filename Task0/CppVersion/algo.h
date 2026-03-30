@@ -2,9 +2,6 @@
 #define ALGORITHMS_H
 
 #include "Subject_solution.h"
-<<<<<<< HEAD
-
-=======
 struct GenerationStats {
     int best;
     int worst;
@@ -16,7 +13,6 @@ std::pair<Subject_solution, std::vector<GenerationStats>> genetic_tracked(
     const Subject_solution& solution, int population_size = 100,
     int generations = 100, int root_parents = 20, int tournament_size = 10,
     double pm = 0.1);
->>>>>>> 83805ac (Small fixes across all the project)
 Subject_solution randomSearch(const Subject_solution& solution,
                               int iterations = 10000);
 Subject_solution greedy(const Subject_solution& solution);
@@ -28,12 +24,7 @@ Subject_solution simulatedAnnealing(const Subject_solution& solution,
                                     int iterations = 10000);
 Subject_solution genetic(const Subject_solution& solution,
                          int population_size = 100, int generations = 100,
-<<<<<<< HEAD
-                         int root_parents = 20, int tournament_size = 10,
-                         double pm = 0.1);
-=======
                          int tournament_size = 10, double pm = 0.1,
                          double px = 0.7);
->>>>>>> 83805ac (Small fixes across all the project)
 
 #endif  // ALGORITHMS_H

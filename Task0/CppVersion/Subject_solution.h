@@ -46,18 +46,9 @@ class Subject_solution {
         int num_machines = (int)this->permutation[0].times.size();
         std::vector<int> time(num_machines, 0);
         for (const auto& job : this->permutation) {
-<<<<<<< HEAD
-            for (int i = 0; i < num_machines; i++) {
-                if (i == 0) {
-                    time[i] += job.times[i];
-                } else {
-                    time[i] = std::max(time[i], time[i - 1]) + job.times[i];
-                }
-=======
             time[0] += job.times[0];
             for (int i = 1; i < num_machines; i++) {
                 time[i] = std::max(time[i], time[i - 1]) + job.times[i];
->>>>>>> 83805ac (Small fixes across all the project)
             }
         }
         this->makespan = time[num_machines - 1];
