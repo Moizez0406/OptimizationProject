@@ -45,14 +45,14 @@ def solution(jobs, machines):
 
 
 def swap(subject, machines):
-    i = rand.randint(0, len(subject.ids) - 1)
-    j = rand.randint(0, len(subject.ids) - 1)
-    if i > j:
-        i, j = j, i
+    n = len(subject.permutation)
+    i, j = rand.sample(range(n), 2)
+
     subject.permutation[i], subject.permutation[j] = (
         subject.permutation[j],
         subject.permutation[i],
     )
+
     subject.makespan = solution(subject.permutation, machines)[-1]
 
 

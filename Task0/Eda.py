@@ -5,7 +5,7 @@ from Subject_solution import Subject_solution, swap, ox, solution
 from collections import namedtuple
 
 Job = namedtuple("Job", ["id", "times"])
-jobs, machines, subject, UB, LB = load.load_taillard("tai100_20_0.fsp")
+jobs, machines, subject, UB, LB = load.load_taillard("tai500_20_0.fsp")
 subject = [Job(id=i, times=t) for i, t in enumerate(subject)]
 Subject_solution.set_lookup(subject)
 
@@ -52,9 +52,9 @@ def greedy(subject, machines):
 def genetic(
     subject,
     machines,
-    population_size=100,
+    population_size=180,
     generations=100,
-    tournament_size=10,
+    tournament_size=5,
     pm=0.1,
     px=0.8,
 ):
@@ -147,7 +147,7 @@ def simulatedAnnealing(
     return best
 
 
-def run_comparison(subject, machines, runs=10, algorithms=None):
+def run_comparison(subject, machines, runs=20, algorithms=None):
     # default to all algorithms if none specified
     if algorithms is None:
         algorithms = ["Random Search", "Greedy", "GA", "SA"]

@@ -10,7 +10,7 @@
 int main() {
     std::ofstream outFile("results.csv");
     outFile << "Algorithm,Makespan\n";
-    TaillardInstance inst = load_taillard("../tai100_20_0.fsp");
+    TaillardInstance inst = load_taillard("../tai20_20_0.fsp");
     Subject_solution::set_lookup(inst.jobs);
     Subject_solution sol(inst.jobs);
 
