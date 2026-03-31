@@ -5,42 +5,48 @@ from Subject_solution import Subject_solution, swap, ox, solution
 from collections import namedtuple
 
 Job = namedtuple("Job", ["id", "times"])
-jobs, machines, subject, UB, LB = load.load_taillard("tai500_20_0.fsp")
+jobs, machines, subject, UB, LB = load.load_taillard("tai100_20_0.fsp")
 subject = [Job(id=i, times=t) for i, t in enumerate(subject)]
 Subject_solution.set_lookup(subject)
 
 
 def randomSearch(subject, machines):
-    Highest_solution = float("inf")
-    Best_subject = None
-    for i in range(10000):
-        rand.shuffle(subject)
-        sol = solution(subject, machines)
-        if Highest_solution > sol[-1]:
-            Highest_solution = sol[-1]
-            Best_subject = subject.copy()
-    return Best_subject, Highest_solution
+    best = None
+
+    for _ in range(10000):
+        perm = subject.copy()
+        rand.shuffle(perm)
+
+        ms = solution(perm, machines)[-1]
+        sol = Subject_solution(perm, ms)
+
+        if best is None or sol.makespan < best.makespan:
+            best = sol
+
+    return best
 
 
 def greedy(subject, machines):
-    temp_subject = subject.copy()
-    Best_subject = [temp_subject.pop(0)]  # Take 1st job ((0)(1,2,3,..))
-    rand.shuffle(temp_subject)
+    temp = subject.copy()
+    result = [temp.pop(0)]
+    rand.shuffle(temp)
 
-    while temp_subject:
-        current_sol = float("inf")
-        current_job = None
+    while temp:
+        best_job = None
+        best_ms = float("inf")
 
-        for s in temp_subject:
-            current_step = Best_subject + [s]
-            ms = solution(current_step, machines)[-1]
-            if ms < current_sol:
-                current_sol = ms
-                current_job = s
-        Best_subject.append(current_job)
-        temp_subject.remove(current_job)
+        for job in temp:
+            trial = result + [job]
+            ms = solution(trial, machines)[-1]
 
-    return Best_subject, current_sol
+            if ms < best_ms:
+                best_ms = ms
+                best_job = job
+
+        result.append(best_job)
+        temp.remove(best_job)
+
+    return Subject_solution(result, solution(result, machines)[-1])
 
 
 def genetic(
@@ -48,73 +54,97 @@ def genetic(
     machines,
     population_size=100,
     generations=100,
-    root_parents=20,
     tournament_size=10,
     pm=0.1,
+    px=0.8,
 ):
-    Population = []  # list of Subject_solution objects
-    population_makespan = []
-    temp_subject = subject.copy()
+    Population = []
 
-    for i in range(population_size):
-        rand.shuffle(temp_subject)
-        # store the last value which is the makespan
-        population_makespan.append(solution(temp_subject, machines)[-1])
-        Population.append(Subject_solution(temp_subject.copy(), population_makespan[i]))
-        temp_subject = subject.copy()
+    # --- Initial population ---
+    for _ in range(population_size):
+        temp = subject.copy()
+        rand.shuffle(temp)
+        ms = solution(temp, machines)[-1]
+        Population.append(Subject_solution(temp.copy(), ms))
 
-    for gen in range(generations):
+    global_best = min(Population, key=lambda s: s.makespan)
+
+    for _ in range(generations):
         Parents = []
         Children = []
 
-        # Tournament selection
-        for _ in range(root_parents):
+        # --- Tournament selection (FIXED: population_size, not generations) ---
+        for _ in range(population_size):
             tournament = rand.sample(Population, tournament_size)
-            best_makespan = float("inf")
-            best_parent = None
-            for individual in tournament:
-                if individual.makespan < best_makespan:
-                    best_makespan = individual.makespan
-                    best_parent = individual
-            Parents.append(best_parent)
-        # Crossover ox
+            best = min(tournament, key=lambda s: s.makespan)
+            Parents.append(best)
+
+        # --- Crossover with probability px ---
         for i in range(0, len(Parents), 2):
             if i + 1 < len(Parents):
-                Children.append(ox(Parents[i].ids, Parents[i + 1].ids, machines))
-                Children.append(ox(Parents[i + 1].ids, Parents[i].ids, machines))
-        # for i in range(len(Parents)):
-        #     Children.append(ox(Parents[i].ids, Parents[i - 1].ids, machines))
-        # Mutation swap
+                p1 = Parents[i]
+                p2 = Parents[i + 1]
+
+                if rand.random() < px:
+                    c1 = ox(p1.ids, p2.ids, machines)
+                    c2 = ox(p2.ids, p1.ids, machines)
+                    # recompute makespan
+                    c1.makespan = solution(c1.permutation, machines)[-1]
+                    c2.makespan = solution(c2.permutation, machines)[-1]
+                    Children.extend([c1, c2])
+                else:
+                    # copy parents (like C++)
+                    Children.extend([p1.copy(), p2.copy()])
+        # --- Mutation ---
         for child in Children:
-            if rand.random() < pm:  # mutation probability
+            if rand.random() < pm:
                 swap(child, machines)
-        Population = Children.copy()
-    best = None
-    best_ms = float("inf")
-    for s in Population:
-        if s.makespan < best_ms:
-            best_ms = s.makespan
-            best = s
-    return Population, best
+                # child.makespan = solution(child.permutation, machines)[-1]
+
+        # --- Sort population & children ---
+        Population.sort(key=lambda s: s.makespan)
+        Children.sort(key=lambda s: s.makespan)
+
+        # --- Elitism (top 20%) ---
+        elite_count = population_size // 5
+        new_pop = Population[:elite_count]
+
+        # --- Fill rest with best children ---
+        needed = population_size - elite_count
+        new_pop.extend(Children[:needed])
+
+        Population = new_pop
+
+        # --- Update global best ---
+        if Population[0].makespan < global_best.makespan:
+            global_best = Population[0]
+    return Population, global_best
 
 
 def simulatedAnnealing(
     subject, machines, temp=500, cooling_rate=0.999, iterations=10000
 ):
-    rand.shuffle(subject)
-    current_sol = solution(subject, machines)[-1]
-    current_subject = Subject_solution(subject, current_sol)
+    perm = subject.copy()
+    rand.shuffle(perm)
+
+    current = Subject_solution(perm, solution(perm, machines)[-1])
+    best = current.copy()
+
     for _ in range(iterations):
-        temp_subject = current_subject.copy()
-        swap(temp_subject, machines)
-        if temp_subject.makespan < current_sol:
-            current_sol = temp_subject.makespan
-            current_subject = temp_subject.copy()
-        elif rand.random() < 2.71828 ** ((current_sol - temp_subject.makespan) / temp):
-            current_sol = temp_subject.makespan
-            current_subject = temp_subject.copy()
+        candidate = current.copy()
+        swap(candidate, machines)
+
+        delta = candidate.makespan - current.makespan
+
+        if delta < 0 or rand.random() < pow(2.71828, -delta / temp):
+            current = candidate
+
+            if current.makespan < best.makespan:
+                best = current.copy()
+
         temp *= cooling_rate
-    return current_subject
+
+    return best
 
 
 def run_comparison(subject, machines, runs=10, algorithms=None):
@@ -125,12 +155,11 @@ def run_comparison(subject, machines, runs=10, algorithms=None):
     results = {name: [] for name in algorithms}
 
     algo_map = {
-        "Random Search": lambda: randomSearch(subject, machines)[1],
-        "Greedy": lambda: greedy(subject, machines)[1],
+        "Random Search": lambda: randomSearch(subject, machines).makespan,
+        "Greedy": lambda: greedy(subject, machines).makespan,
         "GA": lambda: genetic(subject, machines, generations=100)[1].makespan,
         "SA": lambda: simulatedAnnealing(subject, machines).makespan,
     }
-
     for _ in range(runs):
         for name in algorithms:
             results[name].append(algo_map[name]())
