@@ -19,23 +19,22 @@ int main() {
     Subject_solution base_sol(inst.jobs);
 
     // Parameters
-    const int RUNS = 35;
+    const int RUNS = 20;
     int population_size = 180;
     int generations = 100;
     int tournament_size = 5;
     int pm = 1;
     // Mutation probabilities to test
-    std::vector<double> pms = {0.1, 0.25, 0.4, 0.55, 0.7, 0.85, 1.0};
+    std::vector<double> pms = {20, 60, 100, 140, 180, 220, 260};
 
     // ---- Experiment loop ----
     for (double pm : pms) {
         std::cout << "Running experiments for pm = " << pm << std::endl;
 
         for (int run = 0; run < RUNS; run++) {
-            Subject_solution sol = base_sol;  // fresh copy
-
-            Subject_solution result = genetic(sol, population_size, generations,
-                                              tournament_size, 0.85, pm);
+            Subject_solution result =
+                genetic(base_sol, population_size, generations, tournament_size,
+                        0.85, 1);
 
             int makespan = result.get_makespan();
 

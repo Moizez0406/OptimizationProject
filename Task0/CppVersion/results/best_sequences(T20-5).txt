@@ -1,0 +1,52 @@
+=== BEST SOLUTIONS FOUND ===
+
+Instance: tai20_20_0.fsp
+Jobs: 20, Machines: 5
+UB: 1278, LB: 1232
+
+Random Search (Makespan: 1312):
+Sequence: 12 7 18 5 8 15 4 10 0 2 14 6 16 1 13 3 17 11 9 19 
+
+Greedy (Makespan: 1448):
+Sequence: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 
+
+Simulated Annealing (Makespan: 1278):
+Sequence: 8 14 16 7 2 5 3 18 0 4 13 17 15 12 6 10 1 9 19 11 
+
+Genetic Algorithm (Makespan: 1297):
+Sequence: 14 1 16 3 10 5 13 2 7 8 4 6 18 0 17 11 15 12 9 19 
+
+=== STATISTICS SUMMARY ===
+
+Random Search:
+  Mean: 1330.0
+  Std Dev: 7.0
+  Min: 1312.0
+  Max: 1339.0
+  Median: 1330.5
+  95% CI: [1327.0, 1333.1]
+
+Greedy:
+  Mean: 1536.1
+  Std Dev: 46.0
+  Min: 1460.0
+  Max: 1605.0
+  Median: 1521.0
+  95% CI: [1516.0, 1556.2]
+
+Simulated Annealing:
+  Mean: 1294.2
+  Std Dev: 6.6
+  Min: 1278.0
+  Max: 1297.0
+  Median: 1297.0
+  95% CI: [1291.4, 1297.1]
+
+Genetic Algorithm:
+  Mean: 1297.0
+  Std Dev: 0.0
+  Min: 1297.0
+  Max: 1297.0
+  Median: 1297.0
+  95% CI: [1297.0, 1297.0]
+

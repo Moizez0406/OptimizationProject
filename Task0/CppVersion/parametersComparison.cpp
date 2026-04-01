@@ -18,10 +18,10 @@ int main() {
     const int RUNS = 10;
 
     // --- Parameter ranges ---
-    std::vector<int> population_sizes = {50, 100, 150, 180};
-    std::vector<int> generations_list = {50, 100, 150};
-    std::vector<int> tournament_sizes = {3, 5, 10};
-    std::vector<double> mutation_rates = {0.05, 0.1, 0.2};
+    std::vector<int> population_sizes = {100, 150, 180};
+    std::vector<int> generations_list = {100, 150};
+    std::vector<int> tournament_sizes = {5};
+    std::vector<double> mutation_rates = {0.05, 0.5, 1};
 
     // --- Grid search ---
     for (int pop : population_sizes) {
