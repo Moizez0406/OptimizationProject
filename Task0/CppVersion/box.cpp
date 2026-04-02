@@ -70,11 +70,11 @@ Statistics compute_statistics(const std::vector<int>& values) {
 int main() {
     system("mkdir -p results");
 
-    TaillardInstance inst = load_taillard("../tai20_20_0.fsp");
+    TaillardInstance inst = load_taillard("../tai500_20_0.fsp");
     Subject_solution::set_lookup(inst.jobs);
     Subject_solution base_sol(inst.jobs);
 
-    const int RUNS_PER_CONFIG = 30;
+    const int RUNS_PER_CONFIG = 10;
     int default_population_size = 180;
     int default_generations = 100;
     int default_tournament_size = 5;

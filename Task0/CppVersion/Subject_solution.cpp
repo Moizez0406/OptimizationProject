@@ -32,20 +32,6 @@ std::vector<int> Subject_solution::get_ids() const {
     return result;
 }
 
-// void Subject_solution::compute_makespan(Subject_solution& solution) {
-//     int num_machines = (int)this->permutation[0].times.size();
-//     std::vector<int> time(num_machines, 0);
-//     for (const auto& job : this->permutation) {
-//         for (int i = 0; i < num_machines; i++) {
-//             if (i == 0) {
-//                 time[i] += job.times[i];
-//             } else {
-//                 time[i] = std::max(time[i], time[i - 1]) + job.times[i];
-//             }
-//         }
-//     }
-//     this->makespan = time[num_machines - 1];
-// };
 void Subject_solution::swap_jobs(std::mt19937& gen) {
     std::uniform_int_distribution<int> dist(0, (int)permutation.size() - 1);
     int i = dist(gen);

@@ -8,14 +8,11 @@ struct GenerationStats {
     double avg;
 };
 
-// update GA signature to return stats too
-std::pair<Subject_solution, std::vector<GenerationStats>> genetic_tracked(
-    const Subject_solution& solution, int population_size = 100,
-    int generations = 100, int root_parents = 20, int tournament_size = 10,
-    double pm = 0.1);
 Subject_solution randomSearch(const Subject_solution& solution,
                               int iterations = 10000);
 Subject_solution greedy(const Subject_solution& solution);
+Subject_solution greedy_with_budget(const Subject_solution& base_sol,
+                                    int max_evaluations);
 Subject_solution ox(const Subject_solution& parent1,
                     const Subject_solution& parent2);
 Subject_solution simulatedAnnealing(const Subject_solution& solution,

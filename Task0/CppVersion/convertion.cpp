@@ -10,7 +10,7 @@
 
 int main() {
     // Open CSV file for convergence data
-    std::ofstream convergenceFile("convergence_ga.csv");
+    std::ofstream convergenceFile("convergence_ga20.csv");
     convergenceFile << "generation,best_makespan,avg_makespan,worst_makespan\n";
 
     TaillardInstance inst = load_taillard("../tai500_20_0.fsp");
@@ -18,11 +18,11 @@ int main() {
     Subject_solution sol(inst.jobs);
 
     // GA Parameters
-    int population_size = 180;
-    int generations = 100;
-    int tournament_size = 5;
-    double pm = 1;     // mutation probability
-    double px = 0.85;  // crossover probability
+    int population_size = 400;
+    int generations = 600;
+    int tournament_size = 2;
+    double pm = 0.86;  // mutation probability
+    double px = 1;     // crossover probability
 
     // Track convergence data
     std::vector<int> best_per_gen(generations);

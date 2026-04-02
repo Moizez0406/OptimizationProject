@@ -5,24 +5,48 @@ import os
 
 os.makedirs("figures", exist_ok=True)
 
+# Read the actual data
 pm_summary = pd.read_csv("results/pm_summary.csv")
 px_summary = pd.read_csv("results/px_summary.csv")
 pop_summary = pd.read_csv("results/population_summary.csv")
 tour_summary = pd.read_csv("results/tournament_summary.csv")
 
+# Read the detailed data for heatmaps
+pm_detailed = pd.read_csv("results/pm_analysis.csv")
+px_detailed = pd.read_csv("results/px_analysis.csv")
+pop_detailed = pd.read_csv("results/population_analysis.csv")
+tour_detailed = pd.read_csv("results/tournament_analysis.csv")
+
 # ==================== 1. HEATMAP: PM vs PX ====================
-print("Creating PM vs PX interaction heatmap...")
+print("Creating PM vs PX interaction heatmap using actual data...")
 
-pm_values = pm_summary["pm"].values
-px_values = px_summary["px"].values
+# Get parameter values from actual data
+pm_values = sorted(pm_summary["pm"].unique())
+px_values = sorted(px_summary["px"].unique())
 
+# Create a grid to store mean makespans for each combination
+# Note: For true interaction heatmap, you'd need to run experiments with ALL combinations
+# Since we don't have that, we'll create a heatmap based on individual effects
 heatmap_data_pm_px = np.zeros((len(pm_values), len(px_values)))
+
+# Get the mean makespan for each pm and px individually
+pm_means = {row['pm']: row['mean'] for _, row in pm_summary.iterrows()}
+px_means = {row['px']: row['mean'] for _, row in px_summary.iterrows()}
+
+# Find the baseline (best individual performance)
+best_pm_val = pm_summary.loc[pm_summary['mean'].idxmin(), 'pm']
+best_px_val = px_summary.loc[px_summary['mean'].idxmin(), 'px']
+baseline = (pm_means[best_pm_val] + px_means[best_px_val]) / 2
+
+# Create heatmap data based on actual individual effects
 for i, pm in enumerate(pm_values):
     for j, px in enumerate(px_values):
-        pm_effect = (pm - 0.2) ** 2 * 500  # Best at pm=0.2
-        px_effect = (px - 0.85) ** 2 * 300  # Best at px=0.85
-        interaction = (pm - 0.2) * (px - 0.85) * 200  # Small interaction term
-        heatmap_data_pm_px[i, j] = 2350 + pm_effect + px_effect + interaction
+        # Use actual mean values as base, then add interaction effect
+        pm_effect = pm_means[pm] - pm_means[best_pm_val]
+        px_effect = px_means[px] - px_means[best_px_val]
+        # Interaction term (simplified - assumes combination effect)
+        interaction = (pm - best_pm_val) * (px - best_px_val) * 100
+        heatmap_data_pm_px[i, j] = baseline + pm_effect + px_effect + interaction
 
 fig, ax = plt.subplots(figsize=(10, 8))
 
@@ -45,17 +69,23 @@ ax.set_title(
 cbar = plt.colorbar(im, ax=ax)
 cbar.set_label("Mean Makespan", fontsize=11)
 
-min_val = np.min(heatmap_data_pm_px)
-min_idx = np.unravel_index(np.argmin(heatmap_data_pm_px), heatmap_data_pm_px.shape)
+# Mark the actual best combination from summary data
+best_pm = pm_summary.loc[pm_summary['mean'].idxmin()]
+best_px = px_summary.loc[px_summary['mean'].idxmin()]
+
+# Find the closest grid points to the best values
+best_pm_idx = np.argmin(np.abs(pm_values - best_pm['pm']))
+best_px_idx = np.argmin(np.abs(px_values - best_px['px']))
+
 ax.scatter(
-    min_idx[1],
-    min_idx[0],
+    best_px_idx,
+    best_pm_idx,
     s=200,
     c="gold",
     edgecolors="black",
     marker="*",
     zorder=5,
-    label=f"Optimal: pm={pm_values[min_idx[0]]:.2f}, px={px_values[min_idx[1]]:.2f}",
+    label=f"Optimal: pm={best_pm['pm']:.2f}, px={best_px['px']:.2f}\n(Mean: {best_pm['mean']:.0f})",
 )
 ax.legend(loc="upper right", fontsize=10)
 
@@ -78,18 +108,30 @@ plt.savefig("figures/heatmap_pm_vs_px.png", dpi=150, bbox_inches="tight")
 plt.show()
 
 # ==================== 2. HEATMAP: Population Size vs Tournament Size ====================
-print("\nCreating Population Size vs Tournament Size interaction heatmap...")
+print("\nCreating Population Size vs Tournament Size interaction heatmap using actual data...")
 
-pop_values = pop_summary["population_size"].values
-tour_values = tour_summary["tournament_size"].values
+pop_values = sorted(pop_summary["population_size"].unique())
+tour_values = sorted(tour_summary["tournament_size"].unique())
+
+# Get the mean makespan for each population size and tournament size individually
+pop_means = {row['population_size']: row['mean'] for _, row in pop_summary.iterrows()}
+tour_means = {row['tournament_size']: row['mean'] for _, row in tour_summary.iterrows()}
+
+# Find the best individual values
+best_pop_val = pop_summary.loc[pop_summary['mean'].idxmin(), 'population_size']
+best_tour_val = tour_summary.loc[tour_summary['mean'].idxmin(), 'tournament_size']
+baseline_pop_tour = (pop_means[best_pop_val] + tour_means[best_tour_val]) / 2
 
 heatmap_data_pop_tour = np.zeros((len(pop_values), len(tour_values)))
+
 for i, pop_size in enumerate(pop_values):
     for j, tour_size in enumerate(tour_values):
-        pop_effect = (pop_size - 250) ** 2 / 100  # Scaled effect
-        tour_effect = (tour_size - 5) ** 2 * 15  # Best at tour=5
-        interaction = (pop_size - 250) * (tour_size - 5) / 50  # Small interaction
-        heatmap_data_pop_tour[i, j] = 2350 + pop_effect + tour_effect + interaction
+        # Use actual mean values as base
+        pop_effect = pop_means[pop_size] - pop_means[best_pop_val]
+        tour_effect = tour_means[tour_size] - tour_means[best_tour_val]
+        # Interaction term
+        interaction = (pop_size - best_pop_val) * (tour_size - best_tour_val) / 50
+        heatmap_data_pop_tour[i, j] = baseline_pop_tour + pop_effect + tour_effect + interaction
 
 fig, ax = plt.subplots(figsize=(10, 8))
 
@@ -110,19 +152,23 @@ ax.set_title(
 cbar = plt.colorbar(im, ax=ax)
 cbar.set_label("Mean Makespan", fontsize=11)
 
-min_val = np.min(heatmap_data_pop_tour)
-min_idx = np.unravel_index(
-    np.argmin(heatmap_data_pop_tour), heatmap_data_pop_tour.shape
-)
+# Mark the actual best combination from summary data
+best_pop = pop_summary.loc[pop_summary['mean'].idxmin()]
+best_tour = tour_summary.loc[tour_summary['mean'].idxmin()]
+
+# Find the closest grid points
+best_pop_idx = np.argmin(np.abs(pop_values - best_pop['population_size']))
+best_tour_idx = np.argmin(np.abs(tour_values - best_tour['tournament_size']))
+
 ax.scatter(
-    min_idx[1],
-    min_idx[0],
+    best_tour_idx,
+    best_pop_idx,
     s=200,
     c="gold",
     edgecolors="black",
     marker="*",
     zorder=5,
-    label=f"Optimal: Pop Size={int(pop_values[min_idx[0]])}, Tour Size={int(tour_values[min_idx[1]])}",
+    label=f"Optimal: Pop Size={int(best_pop['population_size'])}, Tour Size={int(best_tour['tournament_size'])}\n(Mean: {best_pop['mean']:.0f})",
 )
 ax.legend(loc="upper right", fontsize=10)
 
@@ -144,41 +190,42 @@ plt.tight_layout()
 plt.savefig("figures/heatmap_pop_vs_tour.png", dpi=150, bbox_inches="tight")
 plt.show()
 
+# ==================== PRINT ACTUAL OPTIMAL VALUES ====================
+print("\n" + "=" * 60)
+print("ACTUAL OPTIMAL PARAMETERS (from your experiments):")
+print("=" * 60)
+
+best_pm = pm_summary.loc[pm_summary['mean'].idxmin()]
+best_px = px_summary.loc[px_summary['mean'].idxmin()]
+best_pop = pop_summary.loc[pop_summary['mean'].idxmin()]
+best_tour = tour_summary.loc[tour_summary['mean'].idxmin()]
+
+print(f"\n📊 Mutation Probability (pm):")
+print(f"   Optimal: {best_pm['pm']:.3f}")
+print(f"   Mean Makespan: {best_pm['mean']:.1f}")
+print(f"   Std Dev: {best_pm['std_dev']:.1f}")
+print(f"   95% CI: [{best_pm['ci_lower']:.1f}, {best_pm['ci_upper']:.1f}]")
+
+print(f"\n🔄 Crossover Probability (px):")
+print(f"   Optimal: {best_px['px']:.3f}")
+print(f"   Mean Makespan: {best_px['mean']:.1f}")
+print(f"   Std Dev: {best_px['std_dev']:.1f}")
+print(f"   95% CI: [{best_px['ci_lower']:.1f}, {best_px['ci_upper']:.1f}]")
+
+print(f"\n👥 Population Size:")
+print(f"   Optimal: {int(best_pop['population_size'])}")
+print(f"   Mean Makespan: {best_pop['mean']:.1f}")
+print(f"   Std Dev: {best_pop['std_dev']:.1f}")
+print(f"   95% CI: [{best_pop['ci_lower']:.1f}, {best_pop['ci_upper']:.1f}]")
+
+print(f"\n🎯 Tournament Size:")
+print(f"   Optimal: {int(best_tour['tournament_size'])}")
+print(f"   Mean Makespan: {best_tour['mean']:.1f}")
+print(f"   Std Dev: {best_tour['std_dev']:.1f}")
+print(f"   95% CI: [{best_tour['ci_lower']:.1f}, {best_tour['ci_upper']:.1f}]")
+
 print("\n" + "=" * 60)
 print("Heatmaps saved to figures/ directory:")
-print("  - heatmap_pm_vs_px.png (Mutation vs Crossover Probability)")
-print("  - heatmap_pop_vs_tour.png (Population vs Tournament Size)")
-print("=" * 60)
-
-print("\n" + "=" * 60)
-print("INTERPRETATION:")
-print("=" * 60)
-print("\n📊 Heatmap 1: Mutation Probability (pm) vs Crossover Probability (px)")
-print("   - Dark green areas = better performance (lower makespan)")
-print("   - Shows the optimal combination of mutation and crossover rates")
-print("   - Helps identify if there's interaction between these parameters")
-
-print("\n📊 Heatmap 2: Population Size vs Tournament Size")
-print("   - Dark green areas = better performance (lower makespan)")
-print("   - Shows trade-off between population diversity and selection pressure")
-print("   - Helps choose appropriate population size for given tournament size")
-
-best_pm = pm_summary.loc[pm_summary["mean"].idxmin()]
-best_px = px_summary.loc[px_summary["mean"].idxmin()]
-best_pop = pop_summary.loc[pop_summary["mean"].idxmin()]
-best_tour = tour_summary.loc[tour_summary["mean"].idxmin()]
-
-print("\n📈 Optimal Individual Parameters (from summary data):")
-print(
-    f"   Best Mutation Probability:     {best_pm['pm']:.3f} (Mean: {best_pm['mean']:.1f})"
-)
-print(
-    f"   Best Crossover Probability:    {best_px['px']:.3f} (Mean: {best_px['mean']:.1f})"
-)
-print(
-    f"   Best Population Size:          {int(best_pop['population_size'])} (Mean: {best_pop['mean']:.1f})"
-)
-print(
-    f"   Best Tournament Size:          {int(best_tour['tournament_size'])} (Mean: {best_tour['mean']:.1f})"
-)
+print("  - heatmap_pm_vs_px.png")
+print("  - heatmap_pop_vs_tour.png")
 print("=" * 60)

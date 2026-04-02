@@ -10,7 +10,6 @@
 #include "algo.h"
 #include "load.h"
 
-// Structure to store statistics for each algorithm
 struct AlgorithmStats {
     std::string name;
     std::vector<int> makespans;
@@ -23,7 +22,6 @@ struct AlgorithmStats {
     double ci_upper;
 };
 
-// Function to compute statistics
 AlgorithmStats compute_stats(const std::string& name,
                              const std::vector<int>& values) {
     AlgorithmStats stats;
@@ -32,7 +30,6 @@ AlgorithmStats compute_stats(const std::string& name,
 
     int n = values.size();
 
-    // Basic statistics
     stats.min = *std::min_element(values.begin(), values.end());
     stats.max = *std::max_element(values.begin(), values.end());
 
@@ -42,14 +39,12 @@ AlgorithmStats compute_stats(const std::string& name,
     }
     stats.mean = sum / n;
 
-    // Standard deviation
     double sq_sum = 0;
     for (int val : values) {
         sq_sum += (val - stats.mean) * (val - stats.mean);
     }
     stats.std_dev = std::sqrt(sq_sum / n);
 
-    // Median
     std::vector<int> sorted = values;
     std::sort(sorted.begin(), sorted.end());
     if (n % 2 == 0) {
@@ -58,7 +53,6 @@ AlgorithmStats compute_stats(const std::string& name,
         stats.median = sorted[n / 2];
     }
 
-    // 95% confidence interval
     double standard_error = stats.std_dev / std::sqrt(n);
     stats.ci_lower = stats.mean - 1.96 * standard_error;
     stats.ci_upper = stats.mean + 1.96 * standard_error;
@@ -67,59 +61,64 @@ AlgorithmStats compute_stats(const std::string& name,
 }
 
 int main() {
-    // Create results directory
-    system("mkdir -p results");
-
-    // Load the instance
-    TaillardInstance inst = load_taillard("../tai500_20_0.fsp");
+    TaillardInstance inst = load_taillard("../tai20_5_0.fsp");
     Subject_solution::set_lookup(inst.jobs);
     Subject_solution base_sol(inst.jobs);
 
-    // Experiment parameters
+    std::string dataset_name = "tai20_5_0";
+    std::string results_dir = "results/";
+
+    system(("mkdir -p " + results_dir).c_str());
+
     const int RUNS = 20;
     unsigned int base_seed = 12345;
 
-    // GA Parameters (optimized from sensitivity analysis)
-    int population_size = 250;
+    // GA Parameters
+    int population_size = 180;
     int generations = 100;
     int tournament_size = 5;
-    double pm = 0.20;
-    double px = 0.90;
+    double pm = 0.85;
+    double px = 1;
 
-    // SA Parameters
+    int ga_total_evaluations = population_size * generations;
+
     double initial_temp = 100.0;
     double cooling_rate = 0.95;
-    int sa_iterations = 10000;
+    int sa_iterations = ga_total_evaluations;
+    int rs_iterations = ga_total_evaluations;
+    int greedy_evaluation_budget = ga_total_evaluations;
 
-    // RS Parameters
-    int rs_iterations = 10000;
+    std::cout << "========================================\n";
+    std::cout << "Algorithm Comparison with Equal Evaluation Budget\n";
+    std::cout << "========================================\n";
+    std::cout << "Dataset: " << dataset_name << "\n";
+    std::cout << "Instance: " << inst.n_jobs << " jobs, " << inst.n_machines
+              << " machines\n";
+    std::cout << "Evaluation Budget per Run: " << ga_total_evaluations
+              << " evaluations\n";
+    std::cout << "Runs per algorithm: " << RUNS << "\n\n";
 
-    // Vectors to store results for each algorithm
     std::vector<int> rs_results;
     std::vector<int> greedy_results;
     std::vector<int> sa_results;
     std::vector<int> ga_results;
 
-    // Store best solutions
     Subject_solution best_rs = base_sol.copy();
     Subject_solution best_greedy = base_sol.copy();
     Subject_solution best_sa = base_sol.copy();
     Subject_solution best_ga = base_sol.copy();
 
-    // Open CSV file for detailed results
-    std::ofstream csvFile("results/algorithm_comparison.csv");
+    std::string csv_filename = results_dir + dataset_name + "_comparison.csv";
+    std::ofstream csvFile(csv_filename);
     csvFile
         << "run,random_search,greedy,simulated_annealing,genetic_algorithm\n";
 
-    // Run experiments
     for (int run = 0; run < RUNS; run++) {
-        // Create unique seeds for each algorithm in this run
         unsigned int seed_rs = base_seed + run * 100 + 1;
         unsigned int seed_greedy = base_seed + run * 100 + 2;
         unsigned int seed_sa = base_seed + run * 100 + 3;
         unsigned int seed_ga = base_seed + run * 100 + 4;
 
-        // Run Random Search
         gen.seed(seed_rs);
         Subject_solution rs_sol = randomSearch(base_sol, rs_iterations);
         int rs_makespan = rs_sol.get_makespan();
@@ -128,16 +127,15 @@ int main() {
             best_rs = rs_sol.copy();
         }
 
-        // Run Greedy
         gen.seed(seed_greedy);
-        Subject_solution greedy_sol = greedy(base_sol);
+        Subject_solution greedy_sol =
+            greedy_with_budget(base_sol, greedy_evaluation_budget);
         int greedy_makespan = greedy_sol.get_makespan();
         greedy_results.push_back(greedy_makespan);
         if (greedy_makespan < best_greedy.get_makespan()) {
             best_greedy = greedy_sol.copy();
         }
 
-        // Run Simulated Annealing
         gen.seed(seed_sa);
         Subject_solution sa_sol = simulatedAnnealing(
             base_sol, initial_temp, cooling_rate, sa_iterations);
@@ -146,8 +144,6 @@ int main() {
         if (sa_makespan < best_sa.get_makespan()) {
             best_sa = sa_sol.copy();
         }
-
-        // Run Genetic Algorithm
         gen.seed(seed_ga);
         Subject_solution ga_sol = genetic(base_sol, population_size,
                                           generations, tournament_size, pm, px);
@@ -157,48 +153,59 @@ int main() {
             best_ga = ga_sol.copy();
         }
 
-        // Write to CSV
         csvFile << run << "," << rs_makespan << "," << greedy_makespan << ","
                 << sa_makespan << "," << ga_makespan << "\n";
+
+        if ((run + 1) % 5 == 0) {
+            std::cout << "Completed " << (run + 1) << " runs\n";
+        }
     }
 
     csvFile.close();
 
-    // Compute statistics for each algorithm
     std::vector<AlgorithmStats> all_stats;
     all_stats.push_back(compute_stats("Random Search", rs_results));
-    all_stats.push_back(compute_stats("Greedy", greedy_results));
+    all_stats.push_back(compute_stats("Greedy (w/ budget)", greedy_results));
     all_stats.push_back(compute_stats("Simulated Annealing", sa_results));
     all_stats.push_back(compute_stats("Genetic Algorithm", ga_results));
 
-    // Print summary table only
-    std::cout << std::fixed << std::setprecision(1);
-    std::cout << std::string(100, '=') << "\n";
-    std::cout << std::left << std::setw(20) << "Algorithm" << std::right
+    std::cout << "\n" << std::fixed << std::setprecision(1);
+    std::cout << std::string(110, '=') << "\n";
+    std::cout << std::left << std::setw(25) << "Algorithm" << std::right
               << std::setw(10) << "Mean" << std::setw(12) << "Std Dev"
               << std::setw(10) << "Min" << std::setw(10) << "Max"
-              << std::setw(12) << "Median" << std::setw(20) << "95% CI"
+              << std::setw(12) << "Median" << std::setw(25) << "95% CI"
               << "\n";
-    std::cout << std::string(100, '-') << "\n";
+    std::cout << std::string(110, '-') << "\n";
 
     for (const auto& stats : all_stats) {
-        std::cout << std::left << std::setw(20) << stats.name << std::right
+        std::cout << std::left << std::setw(25) << stats.name << std::right
                   << std::setw(10) << stats.mean << std::setw(12)
                   << stats.std_dev << std::setw(10) << stats.min
                   << std::setw(10) << stats.max << std::setw(12) << stats.median
-                  << std::setw(8) << "[" << stats.ci_lower << ", "
+                  << std::setw(10) << "[" << stats.ci_lower << ", "
                   << stats.ci_upper << "]"
                   << "\n";
     }
-    std::cout << std::string(100, '=') << "\n";
+    std::cout << std::string(110, '=') << "\n";
 
-    // Save best sequences to file
-    std::ofstream bestFile("results/best_sequences(T500-20).txt");
-    bestFile << "=== BEST SOLUTIONS FOUND ===\n\n";
-    bestFile << "Instance: taiX_X_X.fsp\n";
+    std::string best_filename =
+        results_dir + dataset_name + "_best_sequences.txt";
+    std::ofstream bestFile(best_filename);
+    bestFile << "=== BEST SOLUTIONS FOUND (Equal Evaluation Budget) ===\n\n";
+    bestFile << "Dataset: " << dataset_name << "\n";
     bestFile << "Jobs: " << inst.n_jobs << ", Machines: " << inst.n_machines
              << "\n";
-    bestFile << "UB: " << inst.UB << ", LB: " << inst.LB << "\n\n";
+    bestFile << "UB: " << inst.UB << ", LB: " << inst.LB << "\n";
+    bestFile << "Evaluation Budget: " << ga_total_evaluations
+             << " per algorithm\n\n";
+
+    bestFile << "GA Configuration (Baseline):\n";
+    bestFile << "  Population Size: " << population_size << "\n";
+    bestFile << "  Generations: " << generations << "\n";
+    bestFile << "  Tournament Size: " << tournament_size << "\n";
+    bestFile << "  Mutation Probability (pm): " << pm << "\n";
+    bestFile << "  Crossover Probability (px): " << px << "\n\n";
 
     bestFile << "Random Search (Makespan: " << best_rs.get_makespan() << "):\n";
     bestFile << "Sequence: ";
@@ -244,13 +251,13 @@ int main() {
     }
 
     bestFile.close();
-    std::cout << "UB: " << inst.UB << std::endl;
+
+    std::cout << "\nUB: " << inst.UB << std::endl;
     std::cout << "LB: " << inst.LB << std::endl;
     std::cout << "\nResults saved to:\n";
-    std::cout << "  - results/algorithm_comparison.csv (Raw data)\n";
-    std::cout
-        << "  - results/best_sequences(T500-20-0).txt (Best sequences and "
-           "statistics)\n";
+    std::cout << "  - " << csv_filename << " (Raw data)\n";
+    std::cout << "  - " << best_filename
+              << " (Best sequences and statistics)\n";
 
     return 0;
 }

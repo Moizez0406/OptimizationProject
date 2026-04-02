@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Read the convergence data
-df = pd.read_csv("convergence_ga.csv")
+df = pd.read_csv("convergence_ga20.csv")
 
 # Create the convergence plot
 plt.figure(figsize=(12, 8))
