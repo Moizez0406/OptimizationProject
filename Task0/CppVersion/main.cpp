@@ -18,10 +18,8 @@ struct AlgorithmStats {
     double min;
     double max;
     double median;
-    double ci_lower;
-    double ci_upper;
+    // double ci = mean -+ 1.96 * (std_dev / sqrt(RUNS))
 };
-
 AlgorithmStats compute_stats(const std::string& name,
                              const std::vector<int>& values) {
     AlgorithmStats stats;
@@ -53,20 +51,18 @@ AlgorithmStats compute_stats(const std::string& name,
         stats.median = sorted[n / 2];
     }
 
-    double standard_error = stats.std_dev / std::sqrt(n);
-    stats.ci_lower = stats.mean - 1.96 * standard_error;
-    stats.ci_upper = stats.mean + 1.96 * standard_error;
-
     return stats;
 }
 
 int main() {
-    TaillardInstance inst = load_taillard("../tai20_5_0.fsp");
+    std::string dataset = "tai20_10_0";
+
+    std::string file_path = "../" + dataset + ".fsp";
+    std::string results_dir = "results/";
+
+    TaillardInstance inst = load_taillard(file_path.c_str());
     Subject_solution::set_lookup(inst.jobs);
     Subject_solution base_sol(inst.jobs);
-
-    std::string dataset_name = "tai20_5_0";
-    std::string results_dir = "results/";
 
     system(("mkdir -p " + results_dir).c_str());
 
@@ -76,7 +72,7 @@ int main() {
     // GA Parameters
     int population_size = 180;
     int generations = 100;
-    int tournament_size = 5;
+    int tournament_size = 2;
     double pm = 0.85;
     double px = 1;
 
@@ -88,14 +84,9 @@ int main() {
     int rs_iterations = ga_total_evaluations;
     int greedy_evaluation_budget = ga_total_evaluations;
 
-    std::cout << "========================================\n";
-    std::cout << "Algorithm Comparison with Equal Evaluation Budget\n";
-    std::cout << "========================================\n";
-    std::cout << "Dataset: " << dataset_name << "\n";
+    std::cout << "Dataset: " << dataset << "\n";
     std::cout << "Instance: " << inst.n_jobs << " jobs, " << inst.n_machines
               << " machines\n";
-    std::cout << "Evaluation Budget per Run: " << ga_total_evaluations
-              << " evaluations\n";
     std::cout << "Runs per algorithm: " << RUNS << "\n\n";
 
     std::vector<int> rs_results;
@@ -108,7 +99,8 @@ int main() {
     Subject_solution best_sa = base_sol.copy();
     Subject_solution best_ga = base_sol.copy();
 
-    std::string csv_filename = results_dir + dataset_name + "_comparison.csv";
+    // Use dataset name for all generated files
+    std::string csv_filename = results_dir + dataset + "_comparison.csv";
     std::ofstream csvFile(csv_filename);
     csvFile
         << "run,random_search,greedy,simulated_annealing,genetic_algorithm\n";
@@ -169,36 +161,36 @@ int main() {
     all_stats.push_back(compute_stats("Simulated Annealing", sa_results));
     all_stats.push_back(compute_stats("Genetic Algorithm", ga_results));
 
+    // Print summary table
     std::cout << "\n" << std::fixed << std::setprecision(1);
-    std::cout << std::string(110, '=') << "\n";
+    std::cout << std::string(85, '=') << "\n";
     std::cout << std::left << std::setw(25) << "Algorithm" << std::right
               << std::setw(10) << "Mean" << std::setw(12) << "Std Dev"
               << std::setw(10) << "Min" << std::setw(10) << "Max"
-              << std::setw(12) << "Median" << std::setw(25) << "95% CI"
-              << "\n";
-    std::cout << std::string(110, '-') << "\n";
+              << std::setw(12) << "Median" << "\n";
+    std::cout << std::string(85, '-') << "\n";
 
     for (const auto& stats : all_stats) {
         std::cout << std::left << std::setw(25) << stats.name << std::right
                   << std::setw(10) << stats.mean << std::setw(12)
                   << stats.std_dev << std::setw(10) << stats.min
                   << std::setw(10) << stats.max << std::setw(12) << stats.median
-                  << std::setw(10) << "[" << stats.ci_lower << ", "
-                  << stats.ci_upper << "]"
                   << "\n";
     }
-    std::cout << std::string(110, '=') << "\n";
+    std::cout << std::string(85, '=') << "\n";
 
-    std::string best_filename =
-        results_dir + dataset_name + "_best_sequences.txt";
+    // Save to file using dataset name
+    std::string best_filename = results_dir + dataset + "_best_sequences.txt";
     std::ofstream bestFile(best_filename);
     bestFile << "=== BEST SOLUTIONS FOUND (Equal Evaluation Budget) ===\n\n";
-    bestFile << "Dataset: " << dataset_name << "\n";
+    bestFile << "Dataset: " << dataset << "\n";
+    bestFile << "File: " << file_path << "\n";
     bestFile << "Jobs: " << inst.n_jobs << ", Machines: " << inst.n_machines
              << "\n";
     bestFile << "UB: " << inst.UB << ", LB: " << inst.LB << "\n";
     bestFile << "Evaluation Budget: " << ga_total_evaluations
              << " per algorithm\n\n";
+    bestFile << "Number of runs: " << RUNS << "\n\n";
 
     bestFile << "GA Configuration (Baseline):\n";
     bestFile << "  Population Size: " << population_size << "\n";
@@ -237,7 +229,6 @@ int main() {
     }
     bestFile << "\n\n";
 
-    bestFile << "=== STATISTICS SUMMARY ===\n\n";
     for (const auto& stats : all_stats) {
         bestFile << stats.name << ":\n";
         bestFile << "  Mean: " << std::fixed << std::setprecision(1)
@@ -246,8 +237,7 @@ int main() {
         bestFile << "  Min: " << stats.min << "\n";
         bestFile << "  Max: " << stats.max << "\n";
         bestFile << "  Median: " << stats.median << "\n";
-        bestFile << "  95% CI: [" << stats.ci_lower << ", " << stats.ci_upper
-                 << "]\n\n";
+        bestFile << "\n";
     }
 
     bestFile.close();
