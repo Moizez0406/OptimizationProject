@@ -1,0 +1,14 @@
+GA Convergence Summary
+======================
+
+Population Size: 180
+Generations: 100
+Tournament Size: 5
+Mutation Probability: 1
+Crossover Probability: 0.85
+
+Final Best Makespan: 27560
+Final Average Makespan: 27673
+Final Worst Makespan: 27777
+
+Best Improvement: 2046

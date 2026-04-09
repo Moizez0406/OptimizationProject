@@ -1,0 +1,5 @@
+/home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/build/CMakeFiles/con.dir
+/home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/build/CMakeFiles/main.dir
+/home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/build/CMakeFiles/box.dir
+/home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/build/CMakeFiles/edit_cache.dir
+/home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/build/CMakeFiles/rebuild_cache.dir

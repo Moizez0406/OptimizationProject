@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/box.dir/link.d CMakeFiles/box.dir/main/box.cpp.o CMakeFiles/box.dir/src/Subject_solution.cpp.o CMakeFiles/box.dir/src/load.cpp.o CMakeFiles/box.dir/src/algo.cpp.o -o box
