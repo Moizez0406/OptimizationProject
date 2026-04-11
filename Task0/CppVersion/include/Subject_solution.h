@@ -1,4 +1,4 @@
-#ifndef SUBJECT_SOLUTION_H  // convention: ALL_CAPS for header guards
+#ifndef SUBJECT_SOLUTION_H
 #define SUBJECT_SOLUTION_H
 
 #include <algorithm>

@@ -8,7 +8,6 @@ struct GenerationStats {
     double avg;
 };
 
-// update GA signature to return stats too
 std::pair<Subject_solution, std::vector<GenerationStats>> genetic_tracked(
     const Subject_solution& solution, int population_size = 100,
     int generations = 100, int root_parents = 20, int tournament_size = 10,

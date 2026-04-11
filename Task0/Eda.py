@@ -5,7 +5,7 @@ from Subject_solution import Subject_solution, swap, ox, solution
 from collections import namedtuple
 
 Job = namedtuple("Job", ["id", "times"])
-jobs, machines, subject, UB, LB = load.load_taillard("tai500_20_0.fsp")
+jobs, machines, subject, UB, LB = load.load_taillard("tai20_5_0.fsp")
 subject = [Job(id=i, times=t) for i, t in enumerate(subject)]
 Subject_solution.set_lookup(subject)
 
@@ -21,9 +21,9 @@ def randomSearch(subject, machines):
         sol = Subject_solution(perm, ms)
 
         if best is None or sol.makespan < best.makespan:
-            best = sol
-
-    return best
+            best = sol.copy()
+            return best
+    return sol
 
 
 def greedy(subject, machines):
@@ -60,7 +60,7 @@ def genetic(
 ):
     Population = []
 
-    # --- Initial population ---
+    # Init Pop
     for _ in range(population_size):
         temp = subject.copy()
         rand.shuffle(temp)
@@ -73,13 +73,13 @@ def genetic(
         Parents = []
         Children = []
 
-        # --- Tournament selection (FIXED: population_size, not generations) ---
+        # Tournament
         for _ in range(population_size):
             tournament = rand.sample(Population, tournament_size)
             best = min(tournament, key=lambda s: s.makespan)
             Parents.append(best)
 
-        # --- Crossover with probability px ---
+        # Crossover
         for i in range(0, len(Parents), 2):
             if i + 1 < len(Parents):
                 p1 = Parents[i]
@@ -93,29 +93,24 @@ def genetic(
                     c2.makespan = solution(c2.permutation, machines)[-1]
                     Children.extend([c1, c2])
                 else:
-                    # copy parents (like C++)
                     Children.extend([p1.copy(), p2.copy()])
-        # --- Mutation ---
+        # Mutation
         for child in Children:
             if rand.random() < pm:
                 swap(child, machines)
-                # child.makespan = solution(child.permutation, machines)[-1]
 
-        # --- Sort population & children ---
         Population.sort(key=lambda s: s.makespan)
         Children.sort(key=lambda s: s.makespan)
 
-        # --- Elitism (top 20%) ---
+        # Elitism
         elite_count = population_size // 5
         new_pop = Population[:elite_count]
 
-        # --- Fill rest with best children ---
         needed = population_size - elite_count
         new_pop.extend(Children[:needed])
 
         Population = new_pop
 
-        # --- Update global best ---
         if Population[0].makespan < global_best.makespan:
             global_best = Population[0]
     return Population, global_best
@@ -155,7 +150,9 @@ def run_comparison(subject, machines, runs=20, algorithms=None):
     results = {name: [] for name in algorithms}
 
     algo_map = {
-        "Random Search": lambda: randomSearch(subject, machines).makespan,
+        "Random Search": lambda: randomSearch(
+            subject, machines
+        ).makespan,  # need random search to return a class.
         "Greedy": lambda: greedy(subject, machines).makespan,
         "GA": lambda: genetic(subject, machines, generations=100)[1].makespan,
         "SA": lambda: simulatedAnnealing(subject, machines).makespan,
@@ -174,7 +171,6 @@ def run_comparison(subject, machines, runs=20, algorithms=None):
     print(f"\nKnown UB: {UB} | Known LB: {LB}")
 
 
-# all algorithms
 run_comparison(subject, machines)
 
 # just SA and Random Search

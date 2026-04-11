@@ -1,0 +1,19 @@
+# Global defaults (C++)
+BasedOnStyle: LLVM
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+DerivePointerAlignment: false
+PointerAlignment: Left
+
+---
+Language: JavaScript
+ColumnLimit: 100
+
+---
+Language: Proto
+DisableFormat: true
+
+---
+Language: CSharp
+ColumnLimit: 100
