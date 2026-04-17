@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/moises/University/Optimization/OptimizationProject/Task0/CppVersion
+CMAKE_SOURCE_DIR = /home/moises/University/OptimizationProject/Task0/CppVersion
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/build
+CMAKE_BINARY_DIR = /home/moises/University/OptimizationProject/Task0/CppVersion/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/build/CMakeFiles /home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/moises/University/OptimizationProject/Task0/CppVersion/build/CMakeFiles /home/moises/University/OptimizationProject/Task0/CppVersion/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/moises/University/OptimizationProject/Task0/CppVersion/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -154,6 +154,58 @@ box: cmake_check_build_system
 box/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/box.dir/build.make CMakeFiles/box.dir/build
 .PHONY : box/fast
+
+#=============================================================================
+# Target rules for targets named pm
+
+# Build rule for target.
+pm: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pm
+.PHONY : pm
+
+# fast build rule for target.
+pm/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pm.dir/build.make CMakeFiles/pm.dir/build
+.PHONY : pm/fast
+
+#=============================================================================
+# Target rules for targets named pop
+
+# Build rule for target.
+pop: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pop
+.PHONY : pop
+
+# fast build rule for target.
+pop/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pop.dir/build.make CMakeFiles/pop.dir/build
+.PHONY : pop/fast
+
+#=============================================================================
+# Target rules for targets named px
+
+# Build rule for target.
+px: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 px
+.PHONY : px
+
+# fast build rule for target.
+px/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/px.dir/build.make CMakeFiles/px.dir/build
+.PHONY : px/fast
+
+#=============================================================================
+# Target rules for targets named tour
+
+# Build rule for target.
+tour: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tour
+.PHONY : tour
+
+# fast build rule for target.
+tour/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tour.dir/build.make CMakeFiles/tour.dir/build
+.PHONY : tour/fast
 
 main/box.o: main/box.cpp.o
 .PHONY : main/box.o
@@ -227,6 +279,102 @@ main/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main/main.cpp.s
 .PHONY : main/main.cpp.s
 
+main/pm_analysis.o: main/pm_analysis.cpp.o
+.PHONY : main/pm_analysis.o
+
+# target to build an object file
+main/pm_analysis.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pm.dir/build.make CMakeFiles/pm.dir/main/pm_analysis.cpp.o
+.PHONY : main/pm_analysis.cpp.o
+
+main/pm_analysis.i: main/pm_analysis.cpp.i
+.PHONY : main/pm_analysis.i
+
+# target to preprocess a source file
+main/pm_analysis.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pm.dir/build.make CMakeFiles/pm.dir/main/pm_analysis.cpp.i
+.PHONY : main/pm_analysis.cpp.i
+
+main/pm_analysis.s: main/pm_analysis.cpp.s
+.PHONY : main/pm_analysis.s
+
+# target to generate assembly for a file
+main/pm_analysis.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pm.dir/build.make CMakeFiles/pm.dir/main/pm_analysis.cpp.s
+.PHONY : main/pm_analysis.cpp.s
+
+main/population_analysis.o: main/population_analysis.cpp.o
+.PHONY : main/population_analysis.o
+
+# target to build an object file
+main/population_analysis.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pop.dir/build.make CMakeFiles/pop.dir/main/population_analysis.cpp.o
+.PHONY : main/population_analysis.cpp.o
+
+main/population_analysis.i: main/population_analysis.cpp.i
+.PHONY : main/population_analysis.i
+
+# target to preprocess a source file
+main/population_analysis.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pop.dir/build.make CMakeFiles/pop.dir/main/population_analysis.cpp.i
+.PHONY : main/population_analysis.cpp.i
+
+main/population_analysis.s: main/population_analysis.cpp.s
+.PHONY : main/population_analysis.s
+
+# target to generate assembly for a file
+main/population_analysis.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pop.dir/build.make CMakeFiles/pop.dir/main/population_analysis.cpp.s
+.PHONY : main/population_analysis.cpp.s
+
+main/px_analysis.o: main/px_analysis.cpp.o
+.PHONY : main/px_analysis.o
+
+# target to build an object file
+main/px_analysis.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/px.dir/build.make CMakeFiles/px.dir/main/px_analysis.cpp.o
+.PHONY : main/px_analysis.cpp.o
+
+main/px_analysis.i: main/px_analysis.cpp.i
+.PHONY : main/px_analysis.i
+
+# target to preprocess a source file
+main/px_analysis.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/px.dir/build.make CMakeFiles/px.dir/main/px_analysis.cpp.i
+.PHONY : main/px_analysis.cpp.i
+
+main/px_analysis.s: main/px_analysis.cpp.s
+.PHONY : main/px_analysis.s
+
+# target to generate assembly for a file
+main/px_analysis.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/px.dir/build.make CMakeFiles/px.dir/main/px_analysis.cpp.s
+.PHONY : main/px_analysis.cpp.s
+
+main/tournament_analysis.o: main/tournament_analysis.cpp.o
+.PHONY : main/tournament_analysis.o
+
+# target to build an object file
+main/tournament_analysis.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tour.dir/build.make CMakeFiles/tour.dir/main/tournament_analysis.cpp.o
+.PHONY : main/tournament_analysis.cpp.o
+
+main/tournament_analysis.i: main/tournament_analysis.cpp.i
+.PHONY : main/tournament_analysis.i
+
+# target to preprocess a source file
+main/tournament_analysis.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tour.dir/build.make CMakeFiles/tour.dir/main/tournament_analysis.cpp.i
+.PHONY : main/tournament_analysis.cpp.i
+
+main/tournament_analysis.s: main/tournament_analysis.cpp.s
+.PHONY : main/tournament_analysis.s
+
+# target to generate assembly for a file
+main/tournament_analysis.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tour.dir/build.make CMakeFiles/tour.dir/main/tournament_analysis.cpp.s
+.PHONY : main/tournament_analysis.cpp.s
+
 src/Subject_solution.o: src/Subject_solution.cpp.o
 .PHONY : src/Subject_solution.o
 
@@ -235,6 +383,10 @@ src/Subject_solution.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/con.dir/build.make CMakeFiles/con.dir/src/Subject_solution.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Subject_solution.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/box.dir/build.make CMakeFiles/box.dir/src/Subject_solution.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pm.dir/build.make CMakeFiles/pm.dir/src/Subject_solution.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pop.dir/build.make CMakeFiles/pop.dir/src/Subject_solution.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/px.dir/build.make CMakeFiles/px.dir/src/Subject_solution.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tour.dir/build.make CMakeFiles/tour.dir/src/Subject_solution.cpp.o
 .PHONY : src/Subject_solution.cpp.o
 
 src/Subject_solution.i: src/Subject_solution.cpp.i
@@ -245,6 +397,10 @@ src/Subject_solution.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/con.dir/build.make CMakeFiles/con.dir/src/Subject_solution.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Subject_solution.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/box.dir/build.make CMakeFiles/box.dir/src/Subject_solution.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pm.dir/build.make CMakeFiles/pm.dir/src/Subject_solution.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pop.dir/build.make CMakeFiles/pop.dir/src/Subject_solution.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/px.dir/build.make CMakeFiles/px.dir/src/Subject_solution.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tour.dir/build.make CMakeFiles/tour.dir/src/Subject_solution.cpp.i
 .PHONY : src/Subject_solution.cpp.i
 
 src/Subject_solution.s: src/Subject_solution.cpp.s
@@ -255,6 +411,10 @@ src/Subject_solution.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/con.dir/build.make CMakeFiles/con.dir/src/Subject_solution.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Subject_solution.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/box.dir/build.make CMakeFiles/box.dir/src/Subject_solution.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pm.dir/build.make CMakeFiles/pm.dir/src/Subject_solution.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pop.dir/build.make CMakeFiles/pop.dir/src/Subject_solution.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/px.dir/build.make CMakeFiles/px.dir/src/Subject_solution.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tour.dir/build.make CMakeFiles/tour.dir/src/Subject_solution.cpp.s
 .PHONY : src/Subject_solution.cpp.s
 
 src/algo.o: src/algo.cpp.o
@@ -265,6 +425,10 @@ src/algo.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/con.dir/build.make CMakeFiles/con.dir/src/algo.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/algo.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/box.dir/build.make CMakeFiles/box.dir/src/algo.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pm.dir/build.make CMakeFiles/pm.dir/src/algo.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pop.dir/build.make CMakeFiles/pop.dir/src/algo.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/px.dir/build.make CMakeFiles/px.dir/src/algo.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tour.dir/build.make CMakeFiles/tour.dir/src/algo.cpp.o
 .PHONY : src/algo.cpp.o
 
 src/algo.i: src/algo.cpp.i
@@ -275,6 +439,10 @@ src/algo.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/con.dir/build.make CMakeFiles/con.dir/src/algo.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/algo.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/box.dir/build.make CMakeFiles/box.dir/src/algo.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pm.dir/build.make CMakeFiles/pm.dir/src/algo.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pop.dir/build.make CMakeFiles/pop.dir/src/algo.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/px.dir/build.make CMakeFiles/px.dir/src/algo.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tour.dir/build.make CMakeFiles/tour.dir/src/algo.cpp.i
 .PHONY : src/algo.cpp.i
 
 src/algo.s: src/algo.cpp.s
@@ -285,6 +453,10 @@ src/algo.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/con.dir/build.make CMakeFiles/con.dir/src/algo.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/algo.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/box.dir/build.make CMakeFiles/box.dir/src/algo.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pm.dir/build.make CMakeFiles/pm.dir/src/algo.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pop.dir/build.make CMakeFiles/pop.dir/src/algo.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/px.dir/build.make CMakeFiles/px.dir/src/algo.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tour.dir/build.make CMakeFiles/tour.dir/src/algo.cpp.s
 .PHONY : src/algo.cpp.s
 
 src/load.o: src/load.cpp.o
@@ -295,6 +467,10 @@ src/load.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/con.dir/build.make CMakeFiles/con.dir/src/load.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/load.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/box.dir/build.make CMakeFiles/box.dir/src/load.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pm.dir/build.make CMakeFiles/pm.dir/src/load.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pop.dir/build.make CMakeFiles/pop.dir/src/load.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/px.dir/build.make CMakeFiles/px.dir/src/load.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tour.dir/build.make CMakeFiles/tour.dir/src/load.cpp.o
 .PHONY : src/load.cpp.o
 
 src/load.i: src/load.cpp.i
@@ -305,6 +481,10 @@ src/load.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/con.dir/build.make CMakeFiles/con.dir/src/load.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/load.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/box.dir/build.make CMakeFiles/box.dir/src/load.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pm.dir/build.make CMakeFiles/pm.dir/src/load.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pop.dir/build.make CMakeFiles/pop.dir/src/load.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/px.dir/build.make CMakeFiles/px.dir/src/load.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tour.dir/build.make CMakeFiles/tour.dir/src/load.cpp.i
 .PHONY : src/load.cpp.i
 
 src/load.s: src/load.cpp.s
@@ -315,6 +495,10 @@ src/load.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/con.dir/build.make CMakeFiles/con.dir/src/load.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/load.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/box.dir/build.make CMakeFiles/box.dir/src/load.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pm.dir/build.make CMakeFiles/pm.dir/src/load.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pop.dir/build.make CMakeFiles/pop.dir/src/load.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/px.dir/build.make CMakeFiles/px.dir/src/load.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tour.dir/build.make CMakeFiles/tour.dir/src/load.cpp.s
 .PHONY : src/load.cpp.s
 
 # Help Target
@@ -328,6 +512,10 @@ help:
 	@echo "... box"
 	@echo "... con"
 	@echo "... main"
+	@echo "... pm"
+	@echo "... pop"
+	@echo "... px"
+	@echo "... tour"
 	@echo "... main/box.o"
 	@echo "... main/box.i"
 	@echo "... main/box.s"
@@ -337,6 +525,18 @@ help:
 	@echo "... main/main.o"
 	@echo "... main/main.i"
 	@echo "... main/main.s"
+	@echo "... main/pm_analysis.o"
+	@echo "... main/pm_analysis.i"
+	@echo "... main/pm_analysis.s"
+	@echo "... main/population_analysis.o"
+	@echo "... main/population_analysis.i"
+	@echo "... main/population_analysis.s"
+	@echo "... main/px_analysis.o"
+	@echo "... main/px_analysis.i"
+	@echo "... main/px_analysis.s"
+	@echo "... main/tournament_analysis.o"
+	@echo "... main/tournament_analysis.i"
+	@echo "... main/tournament_analysis.s"
 	@echo "... src/Subject_solution.o"
 	@echo "... src/Subject_solution.i"
 	@echo "... src/Subject_solution.s"

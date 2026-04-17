@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/tour.dir/link.d CMakeFiles/tour.dir/main/tournament_analysis.cpp.o CMakeFiles/tour.dir/src/Subject_solution.cpp.o CMakeFiles/tour.dir/src/load.cpp.o CMakeFiles/tour.dir/src/algo.cpp.o -o tour

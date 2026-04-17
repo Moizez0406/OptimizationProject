@@ -8,10 +8,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/main/convertion.cpp" "CMakeFiles/con.dir/main/convertion.cpp.o" "gcc" "CMakeFiles/con.dir/main/convertion.cpp.o.d"
-  "/home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/src/Subject_solution.cpp" "CMakeFiles/con.dir/src/Subject_solution.cpp.o" "gcc" "CMakeFiles/con.dir/src/Subject_solution.cpp.o.d"
-  "/home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/src/algo.cpp" "CMakeFiles/con.dir/src/algo.cpp.o" "gcc" "CMakeFiles/con.dir/src/algo.cpp.o.d"
-  "/home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/src/load.cpp" "CMakeFiles/con.dir/src/load.cpp.o" "gcc" "CMakeFiles/con.dir/src/load.cpp.o.d"
+  "/home/moises/University/OptimizationProject/Task0/CppVersion/main/convertion.cpp" "CMakeFiles/con.dir/main/convertion.cpp.o" "gcc" "CMakeFiles/con.dir/main/convertion.cpp.o.d"
+  "/home/moises/University/OptimizationProject/Task0/CppVersion/src/Subject_solution.cpp" "CMakeFiles/con.dir/src/Subject_solution.cpp.o" "gcc" "CMakeFiles/con.dir/src/Subject_solution.cpp.o.d"
+  "/home/moises/University/OptimizationProject/Task0/CppVersion/src/algo.cpp" "CMakeFiles/con.dir/src/algo.cpp.o" "gcc" "CMakeFiles/con.dir/src/algo.cpp.o.d"
+  "/home/moises/University/OptimizationProject/Task0/CppVersion/src/load.cpp" "CMakeFiles/con.dir/src/load.cpp.o" "gcc" "CMakeFiles/con.dir/src/load.cpp.o.d"
   "" "con" "gcc" "CMakeFiles/con.dir/link.d"
   )
 

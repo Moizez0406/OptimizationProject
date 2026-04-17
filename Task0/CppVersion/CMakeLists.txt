@@ -23,8 +23,26 @@ add_executable(box
     src/load.cpp
     src/algo.cpp
 )
-add_executable(ga
-    main/ga.cpp
+add_executable(pm
+    main/pm_analysis.cpp
+    src/Subject_solution.cpp
+    src/load.cpp
+    src/algo.cpp
+)
+add_executable(pop
+    main/population_analysis.cpp
+    src/Subject_solution.cpp
+    src/load.cpp
+    src/algo.cpp
+)
+add_executable(px
+    main/px_analysis.cpp
+    src/Subject_solution.cpp
+    src/load.cpp
+    src/algo.cpp
+)
+add_executable(tour
+    main/tournament_analysis.cpp
     src/Subject_solution.cpp
     src/load.cpp
     src/algo.cpp
