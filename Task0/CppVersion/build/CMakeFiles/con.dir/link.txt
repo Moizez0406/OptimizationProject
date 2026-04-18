@@ -1,1 +1,0 @@
-/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/con.dir/link.d CMakeFiles/con.dir/main/convertion.cpp.o CMakeFiles/con.dir/src/Subject_solution.cpp.o CMakeFiles/con.dir/src/load.cpp.o CMakeFiles/con.dir/src/algo.cpp.o -o con

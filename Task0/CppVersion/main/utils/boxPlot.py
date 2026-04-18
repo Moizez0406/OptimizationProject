@@ -18,7 +18,6 @@ COLOR_SCHEMES = {
     "tournament": {"main": "#73AB84", "fill": "#C8E6D9"},
 }
 
-# Fixed params taken directly from the 4 separate cpp files
 FIXED_PARAMS = {
     "pm": {
         "Population Size": 360,
@@ -88,7 +87,7 @@ def plot_sensitivity(ax, x, summary, param_key, xlabel, color_key):
     return best_idx, best_x, best_mean
 
 
-# ==================== 1. Mutation Probability (pm) ====================
+# Pm
 print("Plotting Mutation Probability analysis...")
 
 pm_summary = pd.read_csv(f"../results/pm_summary_{INSTANCE}.csv")
@@ -114,7 +113,7 @@ plt.tight_layout()
 plt.savefig("../figures/pm_analysis.png", dpi=150, bbox_inches="tight")
 plt.show()
 
-# ==================== 2. Crossover Probability (px) ====================
+#  Px
 print("Plotting Crossover Probability analysis...")
 
 px_summary = pd.read_csv(f"../results/px_summary_{INSTANCE}.csv")
@@ -140,7 +139,7 @@ plt.tight_layout()
 plt.savefig("../figures/px_analysis.png", dpi=150, bbox_inches="tight")
 plt.show()
 
-# ==================== 3. Population Size ====================
+#   Population
 print("Plotting Population Size analysis...")
 
 pop_summary = pd.read_csv(f"../results/population_summary_{INSTANCE}.csv")
@@ -151,7 +150,6 @@ best_idx, best_pop, best_mean = plot_sensitivity(
     "Population Size", "population"
 )
 
-# Label each point with its paired generation count
 for _, row in pop_summary.iterrows():
     ax.annotate(
         f"gens={int(row['generations'])}",
@@ -180,7 +178,7 @@ plt.tight_layout()
 plt.savefig("../figures/population_analysis.png", dpi=150, bbox_inches="tight")
 plt.show()
 
-# ==================== 4. Tournament Size ====================
+#  Tournament
 print("Plotting Tournament Size analysis...")
 
 tour_summary = pd.read_csv(f"../results/tournament_summary_{INSTANCE}.csv")
@@ -206,7 +204,7 @@ plt.tight_layout()
 plt.savefig("../figures/tournament_analysis.png", dpi=150, bbox_inches="tight")
 plt.show()
 
-# ==================== Summary ====================
+#  Summary
 print("\n" + "=" * 60)
 print("OPTIMAL PARAMETERS SUMMARY")
 print("=" * 60)

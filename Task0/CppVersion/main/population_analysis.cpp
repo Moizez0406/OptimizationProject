@@ -47,7 +47,6 @@ int main() {
     const int TOURNAMENT_SIZE = 5;
     const double FIXED_PM = 0.85;
     const double FIXED_PX = 1;
-    // Budget fixed at 360 * 50 = 18,000 evaluations
     const int EVAL_BUDGET = 360 * 50;
     const unsigned int base_seed = 12345;
 
@@ -104,6 +103,6 @@ int main() {
 
     rawFile.close();
     summaryFile.close();
-    std::cout << "\nDone. Results saved.\n";
+    std::cout << "\n Results saved.\n";
     return 0;
 }

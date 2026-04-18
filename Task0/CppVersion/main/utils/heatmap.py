@@ -12,7 +12,6 @@ except:
     except:
         plt.style.use("default")
 
-# ── Load data ────────────────────────────────────────────────────────────────
 pm_summary   = pd.read_csv("../results/pm_summary_tai500_20_0.csv")
 px_summary   = pd.read_csv("../results/px_summary_tai500_20_0.csv")
 pop_summary  = pd.read_csv("../results/population_summary_tai500_20_0.csv")
@@ -32,13 +31,8 @@ COLORS = {
     "tournament": "#73AB84",
 }
 
-# ════════════════════════════════════════════════════════════════════════════
-# PLOT 1 — Combined sensitivity overview (normalised makespan)
-# All 4 parameters on one figure so magnitudes are directly comparable.
-# ════════════════════════════════════════════════════════════════════════════
 print("Plot 1: Combined sensitivity overview...")
 
-# Build a common reference: global mean across every row we have
 all_means = pd.concat([
     pm_summary["mean"],
     px_summary["mean"],
@@ -48,7 +42,6 @@ all_means = pd.concat([
 global_mean = all_means.mean()
 
 def normalise(series):
-    """Express each value as % deviation from the global mean."""
     return (series - global_mean) / global_mean * 100
 
 datasets = [
@@ -74,22 +67,17 @@ for ax, (label, df, xcol, key) in zip(axes, datasets):
 
     color = COLORS[key]
 
-    # Std-dev band
     ax.fill_between(range(len(x)), y_norm - sd, y_norm + sd,
                     alpha=0.15, color=color)
-    # 95 % CI band
     ax.fill_between(range(len(x)), ci_lo, ci_hi,
                     alpha=0.30, color=color, label="95 % CI")
-    # Mean line
     ax.plot(range(len(x)), y_norm, "o-", color=color,
             linewidth=2, markersize=7, label="Mean")
 
-    # Highlight best
     best_i = np.argmin(df["mean"].values)
     ax.scatter(best_i, y_norm[best_i], s=180, c="gold",
                edgecolors="black", zorder=5, marker="*")
 
-    # Zero reference line
     ax.axhline(0, color="gray", linewidth=0.8, linestyle="--")
 
     ax.set_xticks(range(len(x)))
@@ -100,7 +88,6 @@ for ax, (label, df, xcol, key) in zip(axes, datasets):
     ax.set_title(label, fontsize=11, fontweight="bold")
     ax.set_xlabel(xcol, fontsize=9)
 
-    # Fixed-params footnote
     ax.text(0.02, 0.98, FIXED_LABELS[key],
             transform=ax.transAxes, fontsize=7,
             va="top", ha="left", color="dimgray",
@@ -108,7 +95,6 @@ for ax, (label, df, xcol, key) in zip(axes, datasets):
 
 axes[0].set_ylabel("Normalised makespan (% from grand mean)", fontsize=10)
 
-# Shared legend
 handles = [
     plt.Line2D([0], [0], color="gray", linewidth=2, marker="o", label="Mean"),
     plt.fill([0], [0], alpha=0.30, color="gray", label="95 % CI")[0],
@@ -127,8 +113,6 @@ print("  Saved: sensitivity_overview.png")
 
 # ════════════════════════════════════════════════════════════════════════════
 # PLOT 2 — Mean vs Std-dev scatter (performance vs stability)
-# Each point = one parameter configuration.
-# Better configs are bottom-left (low mean, low variance).
 # ════════════════════════════════════════════════════════════════════════════
 print("Plot 2: Performance vs stability scatter...")
 
@@ -149,20 +133,17 @@ for label, df, xcol, key in datasets:
                     edgecolors="white", linewidths=0.8,
                     label=label, zorder=3)
 
-    # Label each point with its parameter value
     for mean_v, std_v, xv in zip(means, stds, x_vals):
         txt = f"{xv:.2f}" if isinstance(xv, float) else str(int(xv))
         ax.annotate(txt, (mean_v, std_v),
                     textcoords="offset points", xytext=(5, 4),
                     fontsize=7, color=color)
 
-    # Circle the best (lowest mean) for this parameter
     best_i = np.argmin(means)
     ax.scatter(means[best_i], stds[best_i], s=250, color=color,
                edgecolors="black", linewidths=1.5,
                marker="*", zorder=5)
 
-# Ideal-direction arrow
 ax.annotate("", xy=(ax.get_xlim()[0] if ax.get_xlim()[0] else 0,
                     ax.get_ylim()[0] if ax.get_ylim()[0] else 0),
             xytext=(0.18, 0.18), textcoords="axes fraction",
@@ -183,7 +164,7 @@ print("  Saved: performance_vs_stability.png")
 
 
 # ════════════════════════════════════════════════════════════════════════════
-# Summary printout
+# Summary
 # ════════════════════════════════════════════════════════════════════════════
 print("\n" + "=" * 60)
 print("OPTIMAL PARAMETERS SUMMARY")

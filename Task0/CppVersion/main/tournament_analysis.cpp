@@ -58,7 +58,6 @@ int main() {
     const int GENERATIONS = 50;
     const double FIXED_PM = 0.85;
     const double FIXED_PX = 1;
-    // tournament size is varied
     const unsigned int base_seed = 12345;
 
     std::cout << "========================================\n";
@@ -105,6 +104,6 @@ int main() {
 
     rawFile.close();
     summaryFile.close();
-    std::cout << "\nDone. Results saved.\n";
+    std::cout << "\n Results saved.\n";
     return 0;
 }

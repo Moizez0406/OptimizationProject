@@ -1,1 +1,0 @@
-/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/pm.dir/link.d CMakeFiles/pm.dir/main/pm_analysis.cpp.o CMakeFiles/pm.dir/src/Subject_solution.cpp.o CMakeFiles/pm.dir/src/load.cpp.o CMakeFiles/pm.dir/src/algo.cpp.o -o pm

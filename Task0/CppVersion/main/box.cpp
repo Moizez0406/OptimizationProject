@@ -75,7 +75,7 @@ int main() {
     std::cout << "Runs per configuration: " << RUNS_PER_CONFIG << "\n\n";
     std::cout << std::fixed << std::setprecision(3);
 
-    // ── 1. Mutation probability (pm) ─────────────────────────────────────────
+    // Pm
     std::cout << "Testing Mutation Probability (pm)...\n";
     std::vector<double> pm_values = {0.01, 0.05, 0.10, 0.15,
                                      0.20, 0.30, 0.40, 0.50};
