@@ -1,7 +1,7 @@
 CMakeFiles/tour.dir/src/load.cpp.o: \
- /home/moises/University/OptimizationProject/Task0/CppVersion/src/load.cpp \
+ /home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/src/load.cpp \
  /usr/include/stdc-predef.h \
- /home/moises/University/OptimizationProject/Task0/CppVersion/src/../include/load.h \
+ /home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/src/../include/load.h \
  /usr/include/c++/15/string /usr/include/c++/15/bits/requires_hosted.h \
  /usr/include/c++/15/x86_64-redhat-linux/bits/c++config.h \
  /usr/include/bits/wordsize.h \
@@ -96,7 +96,7 @@ CMakeFiles/tour.dir/src/load.cpp.o: \
  /usr/include/c++/15/bits/memory_resource.h /usr/include/c++/15/cstddef \
  /usr/include/c++/15/bits/uses_allocator.h \
  /usr/include/c++/15/bits/uses_allocator_args.h /usr/include/c++/15/tuple \
- /home/moises/University/OptimizationProject/Task0/CppVersion/src/../include/Subject_solution.h \
+ /home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/src/../include/Subject_solution.h \
  /usr/include/c++/15/algorithm /usr/include/c++/15/bits/stl_algo.h \
  /usr/include/c++/15/bits/algorithmfwd.h \
  /usr/include/c++/15/bits/stl_heap.h \

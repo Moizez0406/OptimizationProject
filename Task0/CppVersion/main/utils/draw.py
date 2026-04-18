@@ -13,7 +13,7 @@ except:
         plt.style.use("default")
         print("Note: Using default matplotlib style")
 
-df = pd.read_csv("../results/Comparison_tai20_10_0.csv")
+df = pd.read_csv("../results/Comparison_tai500_20_0.csv")
 
 algorithms = ["random_search", "greedy", "simulated_annealing", "genetic_algorithm"]
 algorithm_names = [
@@ -26,8 +26,8 @@ colors = ["#96CEB4", "#9E4ECD", "#45B7D1", "#FF6B6B"]
 
 means = {algo: df[algo].mean() for algo in algorithms}
 
-UB = 1582
-LB = 1448
+UB = 26189
+LB = 26922
 fig, ax = plt.subplots(figsize=(14, 8))
 
 for i, algo in enumerate(algorithms):

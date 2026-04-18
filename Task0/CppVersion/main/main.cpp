@@ -65,7 +65,7 @@ AlgorithmStats compute_stats(const std::string& name,
 int main() {
     system("mkdir -p results");
 
-    std::string instance_path = "tai20_10_0";
+    std::string instance_path = "tai500_20_0";
     TaillardInstance inst = load_taillard("../../" + instance_path + ".fsp");
     Subject_solution::set_lookup(inst.jobs);
     Subject_solution base_sol(inst.jobs);
@@ -74,19 +74,19 @@ int main() {
     unsigned int base_seed = 12345;
 
     // GA
-    int population_size = 250;
-    int generations = 100;
-    int tournament_size = 5;
-    double pm = 0.20;
-    double px = 0.90;
+    int population_size = 360;
+    int generations = 50;
+    int tournament_size = 6;
+    double pm = 1;
+    double px = 0.9;
 
     // SA
     double initial_temp = 100.0;
     double cooling_rate = 0.95;
-    int sa_iterations = 10000;
+    int sa_iterations = 18000;
 
     // RS
-    int rs_iterations = 10000;
+    int rs_iterations = 18000;
 
     std::vector<int> rs_results;
     std::vector<int> greedy_results;
@@ -229,7 +229,7 @@ int main() {
     std::cout << "UB: " << inst.UB << std::endl;
     std::cout << "LB: " << inst.LB << std::endl;
     std::cout << "\nResults saved to:\n";
-    std::cout << "  - results/BestSequenceComparion_" << instance_path
+    std::cout << "  - results/BestSequenceComparison_" << instance_path
               << ".csv<<(Raw data)\n";
     std::cout << "  - results/best_sequences" << instance_path
               << ".txt (Best sequences and "

@@ -9,7 +9,7 @@
 #include "../include/load.h"
 
 int main() {
-    std::string instance_path = "tai20_10_0";
+    std::string instance_path = "tai500_20_0";
     TaillardInstance inst = load_taillard("../../" + instance_path + ".fsp");
     Subject_solution::set_lookup(inst.jobs);
     Subject_solution sol(inst.jobs);
@@ -18,11 +18,11 @@ int main() {
                                   instance_path + ".csv");
     convergenceFile << "generation,best_makespan,avg_makespan,worst_makespan\n";
 
-    int population_size = 180;
-    int generations = 100;
-    int tournament_size = 5;
+    int population_size = 360;
+    int generations = 50;
+    int tournament_size = 6;
     double pm = 1;    // mutation probability
-    double px = 0.85; // crossover probability
+    double px = 0.9; // crossover probability
 
     std::vector<int> best_per_gen(generations);
     std::vector<double> avg_per_gen(generations);

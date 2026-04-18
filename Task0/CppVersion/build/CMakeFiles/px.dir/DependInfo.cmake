@@ -8,10 +8,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/moises/University/OptimizationProject/Task0/CppVersion/main/px_analysis.cpp" "CMakeFiles/px.dir/main/px_analysis.cpp.o" "gcc" "CMakeFiles/px.dir/main/px_analysis.cpp.o.d"
-  "/home/moises/University/OptimizationProject/Task0/CppVersion/src/Subject_solution.cpp" "CMakeFiles/px.dir/src/Subject_solution.cpp.o" "gcc" "CMakeFiles/px.dir/src/Subject_solution.cpp.o.d"
-  "/home/moises/University/OptimizationProject/Task0/CppVersion/src/algo.cpp" "CMakeFiles/px.dir/src/algo.cpp.o" "gcc" "CMakeFiles/px.dir/src/algo.cpp.o.d"
-  "/home/moises/University/OptimizationProject/Task0/CppVersion/src/load.cpp" "CMakeFiles/px.dir/src/load.cpp.o" "gcc" "CMakeFiles/px.dir/src/load.cpp.o.d"
+  "/home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/main/px_analysis.cpp" "CMakeFiles/px.dir/main/px_analysis.cpp.o" "gcc" "CMakeFiles/px.dir/main/px_analysis.cpp.o.d"
+  "/home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/src/Subject_solution.cpp" "CMakeFiles/px.dir/src/Subject_solution.cpp.o" "gcc" "CMakeFiles/px.dir/src/Subject_solution.cpp.o.d"
+  "/home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/src/algo.cpp" "CMakeFiles/px.dir/src/algo.cpp.o" "gcc" "CMakeFiles/px.dir/src/algo.cpp.o.d"
+  "/home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/src/load.cpp" "CMakeFiles/px.dir/src/load.cpp.o" "gcc" "CMakeFiles/px.dir/src/load.cpp.o.d"
   "" "px" "gcc" "CMakeFiles/px.dir/link.d"
   )
 

@@ -1,5 +1,5 @@
 CMakeFiles/con.dir/main/convertion.cpp.o: \
- /home/moises/University/OptimizationProject/Task0/CppVersion/main/convertion.cpp \
+ /home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/main/convertion.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/15/algorithm \
  /usr/include/c++/15/bits/stl_algobase.h \
  /usr/include/c++/15/x86_64-redhat-linux/bits/c++config.h \
@@ -163,7 +163,7 @@ CMakeFiles/con.dir/main/convertion.cpp.o: \
  /usr/include/c++/15/bits/stl_vector.h \
  /usr/include/c++/15/bits/stl_bvector.h \
  /usr/include/c++/15/bits/vector.tcc \
- /home/moises/University/OptimizationProject/Task0/CppVersion/main/../include/Subject_solution.h \
+ /home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/main/../include/Subject_solution.h \
  /usr/include/c++/15/random /usr/include/c++/15/cstdint \
  /usr/lib/gcc/x86_64-redhat-linux/15/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/stdint-uintn.h \
@@ -180,6 +180,6 @@ CMakeFiles/con.dir/main/convertion.cpp.o: \
  /usr/include/c++/15/bits/enable_special_members.h \
  /usr/include/c++/15/bits/node_handle.h \
  /usr/include/c++/15/bits/erase_if.h \
- /home/moises/University/OptimizationProject/Task0/CppVersion/main/../include/algo.h \
- /home/moises/University/OptimizationProject/Task0/CppVersion/main/../include/Subject_solution.h \
- /home/moises/University/OptimizationProject/Task0/CppVersion/main/../include/load.h
+ /home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/main/../include/algo.h \
+ /home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/main/../include/Subject_solution.h \
+ /home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/main/../include/load.h

@@ -1,8 +1,8 @@
 CMakeFiles/box.dir/src/algo.cpp.o: \
- /home/moises/University/OptimizationProject/Task0/CppVersion/src/algo.cpp \
+ /home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/src/algo.cpp \
  /usr/include/stdc-predef.h \
- /home/moises/University/OptimizationProject/Task0/CppVersion/src/../include/algo.h \
- /home/moises/University/OptimizationProject/Task0/CppVersion/src/../include/Subject_solution.h \
+ /home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/src/../include/algo.h \
+ /home/moises/University/Optimization/OptimizationProject/Task0/CppVersion/src/../include/Subject_solution.h \
  /usr/include/c++/15/algorithm /usr/include/c++/15/bits/stl_algobase.h \
  /usr/include/c++/15/x86_64-redhat-linux/bits/c++config.h \
  /usr/include/bits/wordsize.h \
